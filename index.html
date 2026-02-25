@@ -791,7 +791,7 @@ font-size: 12px; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 8px;
 </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   document.addEventListener('DOMContentLoaded', function () {
 
     // Hamburger menu toggle
@@ -811,13 +811,4 @@ font-size: 12px; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 8px;
       });
     }
 
-    // Smooth scroll for anchor links, offset by fixed nav height
-    document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
-      anchor.addEventListener('click', function (e) {
-        var href = this.getAttribute('href');
-        if (!href || href === '#') return;
-        var target = document.querySelector(href);
-        if (target) {
-          e.preventDefault();
-          var navHeight = document.querySelector('nav').offsetHeight;
-          var to
+    // Smooth scroll for an
