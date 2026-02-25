@@ -1004,7 +1004,22 @@ font-size: 12px; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 8px;
       + fileNote
     );
 
-    window.location.href = 'mailto:team@ntxhail.com?subject=' + subject + '&body=' + body;
+    var mailtoLink = 'mailto:team@ntxhail.com?subject=' + subject + '&body=' + body;
+
+    // Open mailto without navigating away from the page.
+    // Hidden iframe is the most reliable cross-browser approach.
+    try {
+      var iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+      iframe.src = mailtoLink;
+      setTimeout(function() {
+        if (iframe && iframe.parentNode) { iframe.parentNode.removeChild(iframe); }
+      }, 2000);
+    } catch(e) {
+      // Fallback: window.open won't navigate away
+      window.open(mailtoLink, '_blank');
+    }
 
     document.getElementById('submitBtn').style.display = 'none';
     var successMsg = document.getElementById('successMsg');
