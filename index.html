@@ -742,6 +742,286 @@ font-size: 12px; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 8px;
 </div>
 </section>
 
+<!-- STORMWATCH SECTION -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+@keyframes sw-sweep{to{transform:rotate(360deg)}}
+@keyframes sw-blink{50%{opacity:.2}}
+@keyframes sw-slide{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+@keyframes sw-spin{to{transform:rotate(360deg)}}
+#stormwatch{padding:90px 5vw;background:#0a0c0f;position:relative;overflow:hidden}
+#stormwatch .sw-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,180,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,255,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+#stormwatch .sw-sweep{position:absolute;top:-200px;right:-200px;width:600px;height:600px;border-radius:50%;background:conic-gradient(from 0deg,transparent 330deg,rgba(0,180,255,.07) 360deg);animation:sw-sweep 8s linear infinite;pointer-events:none;z-index:0}
+#stormwatch .sw-inner{position:relative;z-index:1;max-width:1200px}
+#stormwatch .sw-header{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:32px}
+#stormwatch .sw-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(38px,4vw,62px);letter-spacing:1px;line-height:1.05;color:#fff;margin:0}
+#stormwatch .sw-title span{color:#e8192c}
+#stormwatch .sw-subtitle{font-size:14px;font-weight:300;line-height:1.7;color:rgba(255,255,255,.45);margin-top:6px}
+#stormwatch .sw-status{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35);font-family:'DM Sans',sans-serif}
+#stormwatch .sw-dot{width:8px;height:8px;border-radius:50%;background:#00e676;animation:sw-blink 1.5s ease-in-out infinite;flex-shrink:0}
+#stormwatch .sw-panel{background:#111418;border:1px solid #1e2530;border-radius:6px;overflow:hidden}
+#stormwatch .sw-tabs{display:flex;border-bottom:1px solid #1e2530}
+#stormwatch .sw-tab{padding:13px 22px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;color:rgba(255,255,255,.4);border:none;border-bottom:2px solid transparent;margin-bottom:-1px;background:none;transition:all .15s}
+#stormwatch .sw-tab.active{color:#fff;border-bottom-color:#e8192c}
+#stormwatch .sw-tab:hover:not(.active){color:rgba(255,255,255,.7)}
+#stormwatch .sw-tab-content{display:none;padding:24px}
+#stormwatch .sw-tab-content.active{display:block}
+#stormwatch .sw-state-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+#stormwatch .sw-sbtn{background:transparent;border:1px solid #1e2530;color:rgba(255,255,255,.4);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;padding:5px 14px;border-radius:3px;cursor:pointer;transition:all .15s;text-transform:uppercase}
+#stormwatch .sw-sbtn:hover{border-color:#e8192c;color:#e8192c}
+#stormwatch .sw-sbtn.active{background:#e8192c;border-color:#e8192c;color:#fff}
+#stormwatch .sw-stats{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+#stormwatch .sw-stat{flex:1;min-width:70px;background:rgba(0,0,0,.3);border:1px solid #1e2530;border-radius:4px;padding:12px 10px;text-align:center}
+#stormwatch .sw-stat-num{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;line-height:1}
+#stormwatch .sw-stat-lbl{font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:4px}
+#stormwatch .sw-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+#stormwatch .sw-updated{font-family:'DM Sans',sans-serif;font-size:10px;color:rgba(255,255,255,.25);letter-spacing:.5px}
+#stormwatch .sw-refresh{background:none;border:1px solid #1e2530;color:rgba(255,255,255,.35);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border-radius:3px;cursor:pointer;transition:all .15s}
+#stormwatch .sw-refresh:hover{border-color:#e8192c;color:#e8192c}
+#stormwatch .sw-card{border-left:3px solid rgba(255,255,255,.15);padding:14px 16px;margin-bottom:12px;background:rgba(0,0,0,.25);border-radius:0 4px 4px 0;animation:sw-slide .3s ease;position:relative}
+#stormwatch .sw-card.Extreme{border-color:#ff2d2d}
+#stormwatch .sw-card.Severe{border-color:#ff8c00}
+#stormwatch .sw-card.Moderate{border-color:#ffd600}
+#stormwatch .sw-card.Minor{border-color:#00b4ff}
+#stormwatch .sw-badge{display:inline-block;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px;border-radius:2px;margin-bottom:8px}
+#stormwatch .sw-badge.Extreme{background:rgba(255,45,45,.18);color:#ff2d2d}
+#stormwatch .sw-badge.Severe{background:rgba(255,140,0,.18);color:#ff8c00}
+#stormwatch .sw-badge.Moderate{background:rgba(255,214,0,.18);color:#ffd600}
+#stormwatch .sw-badge.Minor{background:rgba(0,180,255,.18);color:#00b4ff}
+#stormwatch .sw-badge.Unknown{background:rgba(107,114,128,.18);color:#6b7280}
+#stormwatch .sw-event{font-family:'DM Sans',sans-serif;font-weight:600;font-size:15px;margin-bottom:4px;color:#fff}
+#stormwatch .sw-area{font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(255,255,255,.35);margin-bottom:6px}
+#stormwatch .sw-desc{font-size:12px;color:#9ca3af;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+#stormwatch .sw-expires{font-size:10px;color:rgba(255,255,255,.25);margin-top:8px}
+#stormwatch .sw-empty{text-align:center;padding:40px 20px;color:rgba(255,255,255,.3);font-family:'DM Sans',sans-serif;font-size:12px}
+#stormwatch .sw-spinner{display:inline-block;width:14px;height:14px;border:2px solid #1e2530;border-top-color:#00b4ff;border-radius:50%;animation:sw-spin .7s linear infinite;vertical-align:middle}
+#stormwatch #sw-map{width:100%;height:500px;border-radius:4px;border:1px solid #1e2530;background:#0a0c0f}
+#stormwatch .sw-radar-controls{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+#stormwatch .sw-jlabel{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-right:8px}
+#stormwatch .sw-jbtn{background:transparent;border:1px solid #1e2530;color:rgba(255,255,255,.4);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:1.5px;padding:5px 12px;border-radius:2px;cursor:pointer;transition:all .15s;text-transform:uppercase}
+#stormwatch .sw-jbtn:hover{border-color:#00b4ff;color:#00b4ff}
+#stormwatch .sw-layer-toggle{display:flex;align-items:center;gap:6px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.4);cursor:pointer}
+#stormwatch .sw-layer-toggle input{cursor:pointer;accent-color:#e8192c}
+#stormwatch .leaflet-container{background:#111418!important}
+#stormwatch .leaflet-tile-pane{filter:brightness(.85) saturate(1.2)}
+#stormwatch .leaflet-control-zoom a{background:#111418!important;color:#e8eaed!important;border-color:#1e2530!important}
+#stormwatch .leaflet-control-attribution{background:rgba(10,12,15,.8)!important;color:#6b7280!important;font-size:9px!important}
+#stormwatch .sw-divider{height:1px;background:#1e2530;margin:16px 0}
+</style>
+
+<section id="stormwatch">
+  <div class="sw-grid"></div>
+  <div class="sw-sweep"></div>
+  <div class="sw-inner">
+    <div class="sw-header">
+      <div>
+        <p class="section-label" style="color:#e8192c;margin-bottom:12px;">Real-Time Intelligence</p>
+        <h2 class="sw-title">Storm<span>Watch</span></h2>
+        <p class="sw-subtitle">Live severe weather alerts across the US &mdash; updated every 60 seconds via the National Weather Service.</p>
+      </div>
+      <div class="sw-status"><span class="sw-dot"></span><span id="sw-status-text">CONNECTING&hellip;</span></div>
+    </div>
+    <div class="sw-panel">
+      <div class="sw-tabs">
+        <button class="sw-tab active" onclick="swTab('alerts',this)">Live Alerts</button>
+        <button class="sw-tab" onclick="swTab('radar',this)">Radar</button>
+        <button class="sw-tab" onclick="swTab('info',this)">How It Works</button>
+      </div>
+      <div id="sw-tab-alerts" class="sw-tab-content active">
+        <div class="sw-state-filters">
+          <button class="sw-sbtn active" onclick="swFilter('ALL',this)">ALL</button>
+          <button class="sw-sbtn" onclick="swFilter('TX',this)">TX</button>
+          <button class="sw-sbtn" onclick="swFilter('OK',this)">OK</button>
+          <button class="sw-sbtn" onclick="swFilter('LA',this)">LA</button>
+          <button class="sw-sbtn" onclick="swFilter('AL',this)">AL</button>
+          <button class="sw-sbtn" onclick="swFilter('NC',this)">NC</button>
+          <button class="sw-sbtn" onclick="swFilter('VA',this)">VA</button>
+          <button class="sw-sbtn" onclick="swFilter('AR',this)">AR</button>
+          <button class="sw-sbtn" onclick="swFilter('FL',this)">FL</button>
+          <button class="sw-sbtn" onclick="swFilter('SC',this)">SC</button>
+          <button class="sw-sbtn" onclick="swFilter('TN',this)">TN</button>
+          <button class="sw-sbtn" onclick="swFilter('KY',this)">KY</button>
+          <button class="sw-sbtn" onclick="swFilter('CO',this)">CO</button>
+        </div>
+        <div class="sw-stats">
+          <div class="sw-stat"><div class="sw-stat-num" id="sw-total" style="color:#00b4ff">&#8212;</div><div class="sw-stat-lbl">Total</div></div>
+          <div class="sw-stat"><div class="sw-stat-num" id="sw-extreme" style="color:#ff2d2d">&#8212;</div><div class="sw-stat-lbl">Extreme</div></div>
+          <div class="sw-stat"><div class="sw-stat-num" id="sw-severe" style="color:#ff8c00">&#8212;</div><div class="sw-stat-lbl">Severe</div></div>
+          <div class="sw-stat"><div class="sw-stat-num" id="sw-moderate" style="color:#ffd600">&#8212;</div><div class="sw-stat-lbl">Moderate</div></div>
+        </div>
+        <div class="sw-topbar">
+          <span class="sw-updated" id="sw-updated-ts">Fetching data&hellip;</span>
+          <button class="sw-refresh" onclick="swFetch()">&#8635; Refresh</button>
+        </div>
+        <div id="sw-feed"><div class="sw-empty"><span class="sw-spinner"></span><br><br>Loading NWS alerts&hellip;</div></div>
+      </div>
+      <div id="sw-tab-radar" class="sw-tab-content">
+        <div class="sw-radar-controls">
+          <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;">
+            <span class="sw-jlabel">Jump to</span>
+            <button class="sw-jbtn" onclick="swJump(31.0,-99.3,6)">TX</button>
+            <button class="sw-jbtn" onclick="swJump(35.5,-97.5,7)">OK</button>
+            <button class="sw-jbtn" onclick="swJump(31.0,-91.8,7)">LA</button>
+            <button class="sw-jbtn" onclick="swJump(32.8,-86.8,7)">AL</button>
+            <button class="sw-jbtn" onclick="swJump(35.5,-79.0,7)">NC</button>
+            <button class="sw-jbtn" onclick="swJump(37.5,-79.0,7)">VA</button>
+            <button class="sw-jbtn" onclick="swJump(34.8,-92.2,7)">AR</button>
+            <button class="sw-jbtn" onclick="swJump(27.8,-81.8,6)">FL</button>
+            <button class="sw-jbtn" onclick="swJump(33.8,-80.9,7)">SC</button>
+            <button class="sw-jbtn" onclick="swJump(35.8,-86.4,7)">TN</button>
+            <button class="sw-jbtn" onclick="swJump(37.5,-85.3,7)">KY</button>
+            <button class="sw-jbtn" onclick="swJump(39.0,-105.5,6)">CO</button>
+            <button class="sw-jbtn" onclick="swJump(33.5,-89.0,5)" style="border-color:#e8192c;color:#e8192c;">ALL</button>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;">
+            <label class="sw-layer-toggle"><input type="checkbox" id="sw-tog-alerts" checked onchange="swTogAlerts(this.checked)"> Alert Zones</label>
+            <label class="sw-layer-toggle"><input type="checkbox" id="sw-tog-radar" checked onchange="swTogRadar(this.checked)"> Radar</label>
+          </div>
+        </div>
+        <div id="sw-map"></div>
+        <div style="display:flex;justify-content:space-between;margin-top:8px;">
+          <span class="sw-updated">Base map &copy; OpenStreetMap &middot; Radar &copy; NWS/NOAA via Iowa State Mesonet</span>
+          <span class="sw-updated" id="sw-radar-ts"></span>
+        </div>
+      </div>
+      <div id="sw-tab-info" class="sw-tab-content">
+        <div style="font-size:14px;line-height:1.75;color:rgba(255,255,255,.5);max-width:640px;">
+          <p style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#fff;letter-spacing:2px;margin-bottom:16px;">HOW STORMWATCH WORKS</p>
+          <p style="margin-bottom:16px;">StormWatch polls <strong style="color:#00b4ff;">api.weather.gov</strong> (National Weather Service) for active severe weather alerts across key storm states. Data refreshes automatically every <strong style="color:#fff;">60 seconds</strong>.</p>
+          <div class="sw-divider"></div>
+          <p style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:8px;">Why We Built This</p>
+          <p style="margin-bottom:16px;">At NTX Hail, knowing where the next storm is happening is critical to deploying our teams fast. StormWatch lets us &mdash; and you &mdash; monitor severe weather in real time so we can be on-site the moment hail strikes.</p>
+          <div class="sw-divider"></div>
+          <p style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:8px;">Data Source</p>
+          <p><strong style="color:#fff;">api.weather.gov/alerts/active</strong> &mdash; Official NWS public API, no key required. Updates continuously as alerts are issued, updated, and cancelled.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+var swAlerts=[],swByState={},swFilterVal='ALL';
+var swMap=null,swRadarLyr=null,swAlertLyr=null,swMapReady=false;
+var SW_STATES=['TX','OK','LA','AL','NC','VA','AR','FL','SC','TN','KY','CO'];
+var SEV=['Extreme','Severe','Moderate','Minor','Unknown'];
+function rank(s){var i=SEV.indexOf(s);return i===-1?SEV.length:i;}
+
+window.swFilter=function(state,btn){
+  swFilterVal=state;
+  document.querySelectorAll('#stormwatch .sw-sbtn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  swRender();
+};
+
+window.swTab=function(id,btn){
+  document.querySelectorAll('#stormwatch .sw-tab-content').forEach(function(t){t.classList.remove('active');});
+  document.querySelectorAll('#stormwatch .sw-tab').forEach(function(t){t.classList.remove('active');});
+  document.getElementById('sw-tab-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='radar'){setTimeout(function(){swInitMap();if(swMap)swMap.invalidateSize();swPlotMarkers();},60);}
+};
+
+async function swFetchState(state){
+  var res=await fetch('https://api.weather.gov/alerts/active?area='+state);
+  if(!res.ok)throw new Error(state+': HTTP '+res.status);
+  var data=await res.json();
+  return(data.features||[]).filter(function(f){return f&&f.properties&&f.properties.event;});
+}
+
+window.swFetch=async function(){
+  document.getElementById('sw-status-text').textContent='FETCHING NWS DATA...';
+  document.getElementById('sw-feed').innerHTML='<div class="sw-empty"><span class="sw-spinner"></span><br><br>Loading alerts...</div>';
+  try{
+    var results=await Promise.allSettled(SW_STATES.map(swFetchState));
+    var errors=[];
+    SW_STATES.forEach(function(s,i){
+      if(results[i].status==='fulfilled'){swByState[s]=results[i].value;}
+      else{swByState[s]=[];errors.push(s);}
+    });
+    var seen=new Set();swAlerts=[];
+    SW_STATES.forEach(function(s){(swByState[s]||[]).forEach(function(a){if(!seen.has(a.id)){seen.add(a.id);swAlerts.push(a);}});});
+    swRender();
+    document.getElementById('sw-status-text').textContent='NWS LIVE - '+swAlerts.length+' ACTIVE';
+    document.getElementById('sw-updated-ts').textContent='Updated: '+new Date().toLocaleTimeString()+(errors.length?' | '+errors.length+' failed':'');
+    swPlotMarkers();
+  }catch(e){
+    document.getElementById('sw-status-text').textContent='API ERROR - RETRYING';
+    document.getElementById('sw-feed').innerHTML='<div class="sw-empty"><div style="font-size:32px;margin-bottom:8px;">!</div>Could not reach api.weather.gov<br><small style="font-size:11px;color:#6b7280;">'+e.message+'</small></div>';
+  }
+};
+
+function swRender(){
+  var feed=document.getElementById('sw-feed');
+  var src=swFilterVal==='ALL'?swAlerts:(swByState[swFilterVal]||[]);
+  var sorted=src.slice().sort(function(a,b){return rank(a.properties.severity)-rank(b.properties.severity);});
+  var counts={Extreme:0,Severe:0,Moderate:0,Minor:0};
+  src.forEach(function(a){var s=a.properties.severity;if(counts[s]!==undefined)counts[s]++;});
+  document.getElementById('sw-total').textContent=src.length;
+  document.getElementById('sw-extreme').textContent=counts.Extreme;
+  document.getElementById('sw-severe').textContent=counts.Severe;
+  document.getElementById('sw-moderate').textContent=counts.Moderate;
+  if(!sorted.length){
+    var lbl=swFilterVal==='ALL'?'the selected states':swFilterVal;
+    feed.innerHTML='<div class="sw-empty"><div style="font-size:32px;color:#00e676;margin-bottom:8px;">&#10003;</div>No active alerts for '+lbl+'.</div>';
+    return;
+  }
+  feed.innerHTML=sorted.slice(0,30).map(function(a){
+    var p=a.properties,sev=p.severity||'Unknown';
+    var exp=p.expires?new Date(p.expires).toLocaleString():'Ongoing';
+    var area=(p.areaDesc||'').split(';').slice(0,2).join('; ');
+    var desc=(p.description||'').substring(0,200);
+    return '<div class="sw-card '+sev+'"><span class="sw-badge '+sev+'">'+sev+'</span><div class="sw-event">'+(p.event||'Weather Alert')+'</div><div class="sw-area">&#128205; '+area+'</div>'+(desc?'<div class="sw-desc">'+desc+'</div>':'')+'<div class="sw-expires">Expires: '+exp+'</div></div>';
+  }).join('');
+}
+
+function swInitMap(){
+  if(swMapReady)return;
+  swMapReady=true;
+  swMap=L.map('sw-map',{center:[33.5,-89.0],zoom:5});
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
+    attribution:'&copy; OpenStreetMap &copy; CARTO',subdomains:'abcd',maxZoom:19
+  }).addTo(swMap);
+  swRadarLyr=L.tileLayer.wms('https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0q.cgi?',{
+    layers:'nexrad-n0q-900913',format:'image/png',transparent:true,opacity:0.8,tileSize:256
+  }).addTo(swMap);
+  swAlertLyr=L.tileLayer.wms('https://mesonet.agron.iastate.edu/cgi-bin/wms/us/wwa.cgi?',{
+    layers:'watch_by_county',format:'image/png',transparent:true,opacity:0.5
+  }).addTo(swMap);
+  document.getElementById('sw-radar-ts').textContent='Radar: '+new Date().toLocaleTimeString();
+}
+
+function swPlotMarkers(){
+  if(!swMap||!swAlerts.length)return;
+  swMap.eachLayer(function(l){if(l._swm)swMap.removeLayer(l);});
+  var colors={Extreme:'#ff2d2d',Severe:'#ff8c00',Moderate:'#ffd600',Minor:'#00b4ff'};
+  swAlerts.slice(0,80).forEach(function(a){
+    var p=a.properties,sev=p.severity||'Unknown',color=colors[sev]||'#6b7280',geo=a.geometry;
+    if(!geo)return;
+    var ll;
+    if(geo.type==='Point'){ll=[geo.coordinates[1],geo.coordinates[0]];}
+    else if(geo.type==='Polygon'&&geo.coordinates&&geo.coordinates[0]&&geo.coordinates[0].length){
+      var c=geo.coordinates[0];
+      ll=[c.reduce(function(s,x){return s+x[1];},0)/c.length,c.reduce(function(s,x){return s+x[0];},0)/c.length];
+    }else{return;}
+    var m=L.circleMarker(ll,{radius:sev==='Extreme'?10:sev==='Severe'?8:6,fillColor:color,color:color,weight:1,opacity:.9,fillOpacity:.35});
+    m._swm=true;
+    m.bindPopup('<div style="font-size:11px;min-width:180px"><div style="color:'+color+';font-weight:700;margin-bottom:4px">'+sev.toUpperCase()+'</div><div style="font-weight:600;margin-bottom:4px">'+(p.event||'Alert')+'</div><div style="color:#9ca3af;font-size:10px">'+(p.areaDesc||'').split(';')[0]+'</div>'+(p.expires?'<div style="color:#6b7280;font-size:10px;margin-top:4px">Expires: '+new Date(p.expires).toLocaleString()+'</div>':'')+'</div>');
+    m.addTo(swMap);
+  });
+}
+
+window.swJump=function(lat,lng,z){if(swMap)swMap.setView([lat,lng],z);};
+window.swTogRadar=function(on){if(swMap&&swRadarLyr){on?swMap.addLayer(swRadarLyr):swMap.removeLayer(swRadarLyr);}};
+window.swTogAlerts=function(on){if(swMap&&swAlertLyr){on?swMap.addLayer(swAlertLyr):swMap.removeLayer(swAlertLyr);}};
+
+swFetch();
+setInterval(swFetch,60000);
+})();
+</script>
+
 <!-- FOOTER -->
 <footer>
 <div class="footer-top">
@@ -988,12 +1268,13 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!target) return;
       e.preventDefault();
       var navHeight = document.querySelector('nav') ? document.querySelector('nav').offsetHeight : 80;
+      var top = target.getBoundingClientRect().top + window.pageYOffset - navH
       var top = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
       window.scrollTo({ top: top, behavior: 'smooth' });
     });
   });
 
-  // ── Footer "Call Us" button → phone on mobile, scroll on desktop ─
+  // Footer Call Us -> phone on mobile, #faq on desktop
   var footerBookBtn = document.getElementById('footerBookBtn');
   if (footerBookBtn) {
     var isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
