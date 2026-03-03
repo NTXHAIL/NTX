@@ -496,6 +496,7 @@ font-size: 12px; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 8px;
 <li><a href="#why">Why Us</a></li>
 <li><a href="#team">Careers</a></li>
 <li><a href="#faq">FAQ</a></li>
+<li><a href="#stormwatch">StormWatch</a></li>
 <li><a href="tel:+12143085779" class="nav-cta">&#128222; Call Us</a></li>
 </ul>
 <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
@@ -510,6 +511,7 @@ font-size: 12px; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 8px;
 <a href="#why" class="mobile-link">Why NTX Hail</a>
 <a href="#team" class="mobile-link">Careers</a>
 <a href="#faq" class="mobile-link">FAQ</a>
+<a href="#stormwatch" class="mobile-link">StormWatch</a>
 
 <a href="tel:+12143085779">&#128222; 214-308-5779</a>
 </div>
@@ -557,7 +559,7 @@ font-size: 12px; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 8px;
 <div class="alert-bar">
 <a href="tel:+12143085779">&#128222; 214-308-5779</a>
 <span class="alert-sep">|</span>
-<a href="mailto:team@ntxhail.com">&#9993; team@ntxhail.com</a>
+<a href="/cdn-cgi/l/email-protection#b8ccddd9d5f8d6ccc0d0d9d1d496dbd7d5">&#9993; <span class="__cf_email__" data-cfemail="c3b7a6a2ae83adb7bbaba2aaafeda0acae">[email&#160;protected]</span></a>
 <span class="alert-sep">|</span>
 <a href="https://admin.mobiletechrx.com/login" target="_blank" rel="noopener">&#127970; Partner Portal</a>
 </div>
@@ -704,7 +706,7 @@ font-size: 12px; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 8px;
 <div class="careers-cta">
 <h3>Ready to Join<br>the Team?</h3>
 <p>We hire nationwide. If you're motivated, reliable, and ready to work hard &mdash; we want to hear from you.</p>
-<a href="mailto:admin@ntxhail.com" style="display:inline-block;margin-top:14px;padding:12px 28px;background:var(--red);color:var(--white);font-family:'DM Sans',sans-serif;font-weight:700;font-size:15px;border-radius:8px;text-decoration:none;letter-spacing:0.5px;transition:background 0.2s;" onmouseover="this.style.background='var(--red-light)'" onmouseout="this.style.background='var(--red)'">Apply Now &rarr;</a>
+<a href="/cdn-cgi/l/email-protection#5233363f3b3c123c262a3a333b3e7c313d3f" style="display:inline-block;margin-top:14px;padding:12px 28px;background:var(--red);color:var(--white);font-family:'DM Sans',sans-serif;font-weight:700;font-size:15px;border-radius:8px;text-decoration:none;letter-spacing:0.5px;transition:background 0.2s;" onmouseover="this.style.background='var(--red-light)'" onmouseout="this.style.background='var(--red)'">Apply Now &rarr;</a>
 </div>
 </div>
 </section>
@@ -744,42 +746,42 @@ font-size: 12px; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 8px;
 
 <!-- STORMWATCH SECTION -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
 @keyframes sw-sweep{to{transform:rotate(360deg)}}
 @keyframes sw-blink{50%{opacity:.2}}
 @keyframes sw-slide{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
 @keyframes sw-spin{to{transform:rotate(360deg)}}
-#stormwatch{padding:90px 5vw;background:#0a0c0f;position:relative;overflow:hidden}
-#stormwatch .sw-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,180,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,180,255,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
-#stormwatch .sw-sweep{position:absolute;top:-200px;right:-200px;width:600px;height:600px;border-radius:50%;background:conic-gradient(from 0deg,transparent 330deg,rgba(0,180,255,.07) 360deg);animation:sw-sweep 8s linear infinite;pointer-events:none;z-index:0}
+#stormwatch{padding:90px 5vw;background:var(--white);position:relative;overflow:hidden}
+#stormwatch .sw-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(21,101,192,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(21,101,192,.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+#stormwatch .sw-sweep{position:absolute;top:-200px;right:-200px;width:600px;height:600px;border-radius:50%;background:conic-gradient(from 0deg,transparent 330deg,rgba(21,101,192,.05) 360deg);animation:sw-sweep 8s linear infinite;pointer-events:none;z-index:0}
 #stormwatch .sw-inner{position:relative;z-index:1;max-width:1200px}
 #stormwatch .sw-header{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:32px}
-#stormwatch .sw-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(38px,4vw,62px);letter-spacing:1px;line-height:1.05;color:#fff;margin:0}
-#stormwatch .sw-title span{color:#e8192c}
-#stormwatch .sw-subtitle{font-size:14px;font-weight:300;line-height:1.7;color:rgba(255,255,255,.45);margin-top:6px}
-#stormwatch .sw-status{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35);font-family:'DM Sans',sans-serif}
+#stormwatch .sw-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(38px,4vw,62px);letter-spacing:1px;line-height:1.05;color:var(--dark);margin:0}
+#stormwatch .sw-title span{color:var(--red)}
+#stormwatch .sw-subtitle{font-size:14px;font-weight:300;line-height:1.7;color:var(--gray);margin-top:6px}
+#stormwatch .sw-status{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);font-family:'DM Sans',sans-serif}
 #stormwatch .sw-dot{width:8px;height:8px;border-radius:50%;background:#00e676;animation:sw-blink 1.5s ease-in-out infinite;flex-shrink:0}
-#stormwatch .sw-panel{background:#111418;border:1px solid #1e2530;border-radius:6px;overflow:hidden}
-#stormwatch .sw-tabs{display:flex;border-bottom:1px solid #1e2530}
-#stormwatch .sw-tab{padding:13px 22px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;color:rgba(255,255,255,.4);border:none;border-bottom:2px solid transparent;margin-bottom:-1px;background:none;transition:all .15s}
-#stormwatch .sw-tab.active{color:#fff;border-bottom-color:#e8192c}
-#stormwatch .sw-tab:hover:not(.active){color:rgba(255,255,255,.7)}
+#stormwatch .sw-panel{background:var(--white);border:1px solid var(--border);border-radius:6px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+#stormwatch .sw-tabs{display:flex;border-bottom:1px solid var(--border)}
+#stormwatch .sw-tab{padding:13px 22px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;color:var(--gray);border:none;border-bottom:2px solid transparent;margin-bottom:-1px;background:none;transition:all .15s}
+#stormwatch .sw-tab.active{color:var(--dark);border-bottom-color:var(--red)}
+#stormwatch .sw-tab:hover:not(.active){color:var(--dark)}
 #stormwatch .sw-tab-content{display:none;padding:24px}
 #stormwatch .sw-tab-content.active{display:block}
 #stormwatch .sw-state-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
-#stormwatch .sw-sbtn{background:transparent;border:1px solid #1e2530;color:rgba(255,255,255,.4);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;padding:5px 14px;border-radius:3px;cursor:pointer;transition:all .15s;text-transform:uppercase}
-#stormwatch .sw-sbtn:hover{border-color:#e8192c;color:#e8192c}
-#stormwatch .sw-sbtn.active{background:#e8192c;border-color:#e8192c;color:#fff}
+#stormwatch .sw-sbtn{background:transparent;border:1px solid var(--border);color:var(--gray);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;padding:5px 14px;border-radius:3px;cursor:pointer;transition:all .15s;text-transform:uppercase}
+#stormwatch .sw-sbtn:hover{border-color:var(--red);color:var(--red)}
+#stormwatch .sw-sbtn.active{background:var(--red);border-color:var(--red);color:#fff}
 #stormwatch .sw-stats{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap}
-#stormwatch .sw-stat{flex:1;min-width:70px;background:rgba(0,0,0,.3);border:1px solid #1e2530;border-radius:4px;padding:12px 10px;text-align:center}
+#stormwatch .sw-stat{flex:1;min-width:70px;background:var(--off-white);border:1px solid var(--border);border-radius:4px;padding:12px 10px;text-align:center}
 #stormwatch .sw-stat-num{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;line-height:1}
-#stormwatch .sw-stat-lbl{font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:4px}
+#stormwatch .sw-stat-lbl{font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-top:4px}
 #stormwatch .sw-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-#stormwatch .sw-updated{font-family:'DM Sans',sans-serif;font-size:10px;color:rgba(255,255,255,.25);letter-spacing:.5px}
-#stormwatch .sw-refresh{background:none;border:1px solid #1e2530;color:rgba(255,255,255,.35);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border-radius:3px;cursor:pointer;transition:all .15s}
-#stormwatch .sw-refresh:hover{border-color:#e8192c;color:#e8192c}
-#stormwatch .sw-card{border-left:3px solid rgba(255,255,255,.15);padding:14px 16px;margin-bottom:12px;background:rgba(0,0,0,.25);border-radius:0 4px 4px 0;animation:sw-slide .3s ease;position:relative}
+#stormwatch .sw-updated{font-family:'DM Sans',sans-serif;font-size:10px;color:var(--gray);letter-spacing:.5px}
+#stormwatch .sw-refresh{background:none;border:1px solid var(--border);color:var(--gray);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border-radius:3px;cursor:pointer;transition:all .15s}
+#stormwatch .sw-refresh:hover{border-color:var(--red);color:var(--red)}
+#stormwatch .sw-card{border-left:3px solid var(--border);padding:14px 16px;margin-bottom:12px;background:var(--off-white);border-radius:0 4px 4px 0;animation:sw-slide .3s ease;position:relative}
 #stormwatch .sw-card.Extreme{border-color:#ff2d2d}
 #stormwatch .sw-card.Severe{border-color:#ff8c00}
 #stormwatch .sw-card.Moderate{border-color:#ffd600}
@@ -790,24 +792,24 @@ font-size: 12px; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 8px;
 #stormwatch .sw-badge.Moderate{background:rgba(255,214,0,.18);color:#ffd600}
 #stormwatch .sw-badge.Minor{background:rgba(0,180,255,.18);color:#00b4ff}
 #stormwatch .sw-badge.Unknown{background:rgba(107,114,128,.18);color:#6b7280}
-#stormwatch .sw-event{font-family:'DM Sans',sans-serif;font-weight:600;font-size:15px;margin-bottom:4px;color:#fff}
-#stormwatch .sw-area{font-family:'DM Sans',sans-serif;font-size:11px;color:rgba(255,255,255,.35);margin-bottom:6px}
-#stormwatch .sw-desc{font-size:12px;color:#9ca3af;line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-#stormwatch .sw-expires{font-size:10px;color:rgba(255,255,255,.25);margin-top:8px}
-#stormwatch .sw-empty{text-align:center;padding:40px 20px;color:rgba(255,255,255,.3);font-family:'DM Sans',sans-serif;font-size:12px}
-#stormwatch .sw-spinner{display:inline-block;width:14px;height:14px;border:2px solid #1e2530;border-top-color:#00b4ff;border-radius:50%;animation:sw-spin .7s linear infinite;vertical-align:middle}
-#stormwatch #sw-map{width:100%;height:500px;border-radius:4px;border:1px solid #1e2530;background:#0a0c0f}
+#stormwatch .sw-event{font-family:'DM Sans',sans-serif;font-weight:600;font-size:15px;margin-bottom:4px;color:var(--dark)}
+#stormwatch .sw-area{font-family:'DM Sans',sans-serif;font-size:11px;color:var(--gray);margin-bottom:6px}
+#stormwatch .sw-desc{font-size:12px;color:var(--gray);line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+#stormwatch .sw-expires{font-size:10px;color:var(--gray);margin-top:8px}
+#stormwatch .sw-empty{text-align:center;padding:40px 20px;color:var(--gray);font-family:'DM Sans',sans-serif;font-size:12px}
+#stormwatch .sw-spinner{display:inline-block;width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:sw-spin .7s linear infinite;vertical-align:middle}
+#stormwatch #sw-map{width:100%;height:500px;border-radius:4px;border:1px solid var(--border);background:var(--off-white)}
 #stormwatch .sw-radar-controls{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px}
-#stormwatch .sw-jlabel{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-right:8px}
-#stormwatch .sw-jbtn{background:transparent;border:1px solid #1e2530;color:rgba(255,255,255,.4);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:1.5px;padding:5px 12px;border-radius:2px;cursor:pointer;transition:all .15s;text-transform:uppercase}
-#stormwatch .sw-jbtn:hover{border-color:#00b4ff;color:#00b4ff}
-#stormwatch .sw-layer-toggle{display:flex;align-items:center;gap:6px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.4);cursor:pointer}
-#stormwatch .sw-layer-toggle input{cursor:pointer;accent-color:#e8192c}
-#stormwatch .leaflet-container{background:#111418!important}
+#stormwatch .sw-jlabel{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-right:8px}
+#stormwatch .sw-jbtn{background:transparent;border:1px solid var(--border);color:var(--gray);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:1.5px;padding:5px 12px;border-radius:2px;cursor:pointer;transition:all .15s;text-transform:uppercase}
+#stormwatch .sw-jbtn:hover{border-color:var(--blue);color:var(--blue)}
+#stormwatch .sw-layer-toggle{display:flex;align-items:center;gap:6px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gray);cursor:pointer}
+#stormwatch .sw-layer-toggle input{cursor:pointer;accent-color:var(--red)}
+#stormwatch .leaflet-container{background:var(--off-white)!important}
 #stormwatch .leaflet-tile-pane{filter:brightness(.85) saturate(1.2)}
-#stormwatch .leaflet-control-zoom a{background:#111418!important;color:#e8eaed!important;border-color:#1e2530!important}
-#stormwatch .leaflet-control-attribution{background:rgba(10,12,15,.8)!important;color:#6b7280!important;font-size:9px!important}
-#stormwatch .sw-divider{height:1px;background:#1e2530;margin:16px 0}
+#stormwatch .leaflet-control-zoom a{background:var(--white)!important;color:var(--dark)!important;border-color:var(--border)!important}
+#stormwatch .leaflet-control-attribution{background:rgba(255,255,255,.85)!important;color:var(--gray)!important;font-size:9px!important}
+#stormwatch .sw-divider{height:1px;background:var(--border);margin:16px 0}
 </style>
 
 <section id="stormwatch">
@@ -826,7 +828,7 @@ font-size: 12px; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 8px;
       <div class="sw-tabs">
         <button class="sw-tab active" onclick="swTab('alerts',this)">Live Alerts</button>
         <button class="sw-tab" onclick="swTab('radar',this)">Radar</button>
-        <button class="sw-tab" onclick="swTab('info',this)">How It Works</button>
+
       </div>
       <div id="sw-tab-alerts" class="sw-tab-content active">
         <div class="sw-state-filters">
@@ -872,7 +874,7 @@ font-size: 12px; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 8px;
             <button class="sw-jbtn" onclick="swJump(35.8,-86.4,7)">TN</button>
             <button class="sw-jbtn" onclick="swJump(37.5,-85.3,7)">KY</button>
             <button class="sw-jbtn" onclick="swJump(39.0,-105.5,6)">CO</button>
-            <button class="sw-jbtn" onclick="swJump(33.5,-89.0,5)" style="border-color:#e8192c;color:#e8192c;">ALL</button>
+            <button class="sw-jbtn" onclick="swJump(33.5,-89.0,5)" style="border-color:var(--red);color:var(--red);">ALL</button>
           </div>
           <div style="display:flex;align-items:center;gap:14px;">
             <label class="sw-layer-toggle"><input type="checkbox" id="sw-tog-alerts" checked onchange="swTogAlerts(this.checked)"> Alert Zones</label>
@@ -885,18 +887,7 @@ font-size: 12px; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 8px;
           <span class="sw-updated" id="sw-radar-ts"></span>
         </div>
       </div>
-      <div id="sw-tab-info" class="sw-tab-content">
-        <div style="font-size:14px;line-height:1.75;color:rgba(255,255,255,.5);max-width:640px;">
-          <p style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:#fff;letter-spacing:2px;margin-bottom:16px;">HOW STORMWATCH WORKS</p>
-          <p style="margin-bottom:16px;">StormWatch polls <strong style="color:#00b4ff;">api.weather.gov</strong> (National Weather Service) for active severe weather alerts across key storm states. Data refreshes automatically every <strong style="color:#fff;">60 seconds</strong>.</p>
-          <div class="sw-divider"></div>
-          <p style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:8px;">Why We Built This</p>
-          <p style="margin-bottom:16px;">At NTX Hail, knowing where the next storm is happening is critical to deploying our teams fast. StormWatch lets us &mdash; and you &mdash; monitor severe weather in real time so we can be on-site the moment hail strikes.</p>
-          <div class="sw-divider"></div>
-          <p style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:8px;">Data Source</p>
-          <p><strong style="color:#fff;">api.weather.gov/alerts/active</strong> &mdash; Official NWS public API, no key required. Updates continuously as alerts are issued, updated, and cancelled.</p>
-        </div>
-      </div>
+
     </div>
   </div>
 </section>
@@ -1030,7 +1021,7 @@ setInterval(swFetch,60000);
 <p>America's premier paintless dent repair specialists. Serving collision centers, insurance companies, individuals, dealerships, and fleets nationwide.</p>
 <div class="footer-contact">
 <a href="tel:+12143085779">&#128222; 214-308-5779</a>
-<a href="mailto:team@ntxhail.com">&#9993; team@ntxhail.com</a>
+<a href="/cdn-cgi/l/email-protection#9aeefffbf7daf4eee2f2fbf3f6b4f9f5f7">&#9993; <span class="__cf_email__" data-cfemail="5f2b3a3e321f312b27373e3633713c3032">[email&#160;protected]</span></a>
 <span style="font-size:13px;color:rgba(255,255,255,0.55);line-height:1.5;display:block;margin-top:8px;">Dakine Investments LLC DBA NTX HAIL<br>904 S Woodrow Ln, Denton, TX 76205</span>
 </div>
 <div class="footer-social">
@@ -1204,14 +1195,14 @@ setInterval(swFetch,60000);
     <p><strong>NTX HAIL</strong><br>
     904 S Woodrow Ln, Denton, TX 76205<br>
     <a href="tel:+12143085779">214-308-5779</a><br>
-    <a href="mailto:team@ntxhail.com">team@ntxhail.com</a></p>
+    <a href="/cdn-cgi/l/email-protection#5e2a3b3f331e302a26363f3732703d3133"><span class="__cf_email__" data-cfemail="1e6a7b7f735e706a66767f7772307d7173">[email&#160;protected]</span></a></p>
 
     <h3>Updates to this Privacy Policy</h3>
     <p>We may update this Privacy Policy from time to time. Any changes will be posted on our website.</p>
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 document.addEventListener('DOMContentLoaded', function () {
 
   // Close privacy modal on backdrop click
@@ -1268,13 +1259,12 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!target) return;
       e.preventDefault();
       var navHeight = document.querySelector('nav') ? document.querySelector('nav').offsetHeight : 80;
-      var top = target.getBoundingClientRect().top + window.pageYOffset - navH
+      var top = target.ge
       var top = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
       window.scrollTo({ top: top, behavior: 'smooth' });
     });
   });
 
-  // Footer Call Us -> phone on mobile, #faq on desktop
   var footerBookBtn = document.getElementById('footerBookBtn');
   if (footerBookBtn) {
     var isMobile = /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
