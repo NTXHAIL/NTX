@@ -833,6 +833,7 @@ font-size: 12px; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 8px;
       <div class="sw-tabs">
         <button class="sw-tab active" onclick="swTab('alerts',this)">Live Alerts</button>
         <button class="sw-tab" onclick="swTab('radar',this)">Radar</button>
+        <button class="sw-tab" onclick="swTab('hailreports',this)">Hail Reports</button>
 
       </div>
       <div id="sw-tab-alerts" class="sw-tab-content active">
@@ -863,6 +864,124 @@ font-size: 12px; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 8px;
         </div>
         <div id="sw-feed"><div class="sw-empty"><span class="sw-spinner"></span><br><br>Loading NWS alerts&hellip;</div></div>
       </div>
+      <div id="sw-tab-hailreports" class="sw-tab-content">
+        <style>
+          #sw-tab-hailreports { font-family: 'Barlow Condensed', sans-serif; }
+          #sw-tab-hailreports .hr-controls { display: grid; grid-template-columns: 1fr 1fr auto; gap: 14px; margin-bottom: 20px; align-items: end; }
+          @media (max-width: 640px) { #sw-tab-hailreports .hr-controls { grid-template-columns: 1fr; } }
+          #sw-tab-hailreports .hr-field label { display: block; font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.18em; color: #00d4ff; margin-bottom: 8px; text-transform: uppercase; }
+          #sw-tab-hailreports .hr-field select, #sw-tab-hailreports .hr-field input { width: 100%; background: rgba(255,255,255,0.04); border: 1px solid rgba(0,212,255,0.2); border-radius: 4px; color: #d0e8f8; font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; padding: 10px 14px; appearance: none; outline: none; transition: border-color 0.2s; }
+          #sw-tab-hailreports .hr-field select:focus, #sw-tab-hailreports .hr-field input:focus { border-color: #00d4ff; background: rgba(0,212,255,0.06); }
+          #sw-tab-hailreports .hr-field select option { background: #1a2f4a; }
+          #sw-tab-hailreports .hr-fetch-btn { background: linear-gradient(135deg, #00d4ff, #0066aa); border: none; border-radius: 4px; color: #0a1628; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: 0.08em; padding: 10px 24px; cursor: pointer; height: 42px; white-space: nowrap; transition: opacity 0.2s; }
+          #sw-tab-hailreports .hr-fetch-btn:hover { opacity: 0.88; }
+          #sw-tab-hailreports .hr-fetch-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+          #sw-tab-hailreports .hr-status { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; font-family: 'Space Mono', monospace; font-size: 0.68rem; color: #4a6080; min-height: 22px; }
+          #sw-tab-hailreports .hr-sdot { width: 8px; height: 8px; border-radius: 50%; background: #4a6080; flex-shrink: 0; }
+          #sw-tab-hailreports .hr-sdot.loading { background: #00d4ff; animation: hrBlink 0.8s ease-in-out infinite; }
+          #sw-tab-hailreports .hr-sdot.success { background: #22ee88; }
+          #sw-tab-hailreports .hr-sdot.error { background: #ff2244; }
+          @keyframes hrBlink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+          #sw-tab-hailreports .hr-stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; display: none; }
+          #sw-tab-hailreports .hr-stat { background: rgba(255,255,255,0.03); border: 1px solid rgba(0,212,255,0.12); border-radius: 6px; padding: 12px 18px; flex: 1; min-width: 100px; }
+          #sw-tab-hailreports .hr-stat-num { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: 2rem; line-height: 1; color: #c8f0ff; }
+          #sw-tab-hailreports .hr-stat-num.danger { color: #ff2244; }
+          #sw-tab-hailreports .hr-stat-num.warning { color: #ff6b35; }
+          #sw-tab-hailreports .hr-stat-num.electric { color: #00d4ff; }
+          #sw-tab-hailreports .hr-stat-lbl { font-family: 'Space Mono', monospace; font-size: 0.55rem; letter-spacing: 0.12em; color: #4a6080; margin-top: 4px; text-transform: uppercase; }
+          #sw-tab-hailreports .hr-filters { display: none; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 16px; }
+          #sw-tab-hailreports .hr-flabel { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: #4a6080; letter-spacing: 0.1em; }
+          #sw-tab-hailreports .hr-fbtn { background: transparent; border: 1px solid rgba(0,212,255,0.2); border-radius: 3px; color: #4a6080; font-family: 'Space Mono', monospace; font-size: 0.6rem; padding: 5px 12px; cursor: pointer; transition: all 0.15s; }
+          #sw-tab-hailreports .hr-fbtn:hover, #sw-tab-hailreports .hr-fbtn.active { background: rgba(0,212,255,0.1); border-color: #00d4ff; color: #00d4ff; }
+          #sw-tab-hailreports .hr-table-wrap { background: rgba(255,255,255,0.02); border: 1px solid rgba(0,212,255,0.1); border-radius: 8px; overflow: hidden; }
+          #sw-tab-hailreports .hr-thead { display: grid; grid-template-columns: 130px 1fr 80px 80px 1fr; background: rgba(0,212,255,0.06); border-bottom: 1px solid rgba(0,212,255,0.15); }
+          #sw-tab-hailreports .hr-thead span { font-family: 'Space Mono', monospace; font-size: 0.55rem; letter-spacing: 0.14em; color: #00d4ff; padding: 10px 14px; text-transform: uppercase; border-right: 1px solid rgba(0,212,255,0.08); }
+          #sw-tab-hailreports .hr-thead span:last-child { border-right: none; }
+          @media (max-width: 700px) { #sw-tab-hailreports .hr-thead { display: none; } }
+          #sw-tab-hailreports .hr-row { display: grid; grid-template-columns: 130px 1fr 80px 80px 1fr; border-bottom: 1px solid rgba(255,255,255,0.04); transition: background 0.15s; animation: hrFade 0.3s ease both; }
+          @keyframes hrFade { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:none} }
+          #sw-tab-hailreports .hr-row:hover { background: rgba(0,212,255,0.04); }
+          #sw-tab-hailreports .hr-row:last-child { border-bottom: none; }
+          #sw-tab-hailreports .hr-cell { padding: 12px 14px; border-right: 1px solid rgba(255,255,255,0.04); display: flex; align-items: flex-start; font-size: 0.88rem; }
+          #sw-tab-hailreports .hr-cell:last-child { border-right: none; }
+          @media (max-width:700px) { #sw-tab-hailreports .hr-row{display:block;padding:12px 14px;} #sw-tab-hailreports .hr-cell{display:block;padding:2px 0;border:none;} #sw-tab-hailreports .hr-cell::before{content:attr(data-label) ': ';font-family:'Space Mono',monospace;font-size:0.55rem;color:#00d4ff;letter-spacing:0.08em;text-transform:uppercase;} }
+          #sw-tab-hailreports .hr-time { font-family: 'Space Mono', monospace; font-size: 0.68rem; color: #4a6080; }
+          #sw-tab-hailreports .hr-loc { font-weight: 600; color: #c8f0ff; }
+          #sw-tab-hailreports .hr-size { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.1rem; justify-content: center; }
+          #sw-tab-hailreports .hr-size.small { color: #88ddaa; }
+          #sw-tab-hailreports .hr-size.medium { color: #ff6b35; }
+          #sw-tab-hailreports .hr-size.large { color: #ff2244; }
+          #sw-tab-hailreports .hr-wfo { font-family: 'Space Mono', monospace; font-size: 0.65rem; background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.2); border-radius: 3px; padding: 2px 8px; color: #00d4ff; align-self: flex-start; }
+          #sw-tab-hailreports .hr-remarks { font-size: 0.8rem; color: #8aa8c0; line-height: 1.4; }
+          #sw-tab-hailreports .hr-empty { padding: 48px 24px; text-align: center; font-family: 'Space Mono', monospace; font-size: 0.72rem; color: #4a6080; line-height: 1.7; }
+          #sw-tab-hailreports .hr-scroll { max-height: 580px; overflow-y: auto; }
+          #sw-tab-hailreports .hr-scroll::-webkit-scrollbar { width: 4px; }
+          #sw-tab-hailreports .hr-scroll::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.2); border-radius: 2px; }
+          #sw-tab-hailreports .hr-spinner { display: inline-block; width: 12px; height: 12px; border: 2px solid rgba(0,212,255,0.2); border-top-color: #00d4ff; border-radius: 50%; animation: hrSpin 0.6s linear infinite; vertical-align: middle; }
+          @keyframes hrSpin { to { transform: rotate(360deg); } }
+        </style>
+
+        <div class="hr-controls">
+          <div class="hr-field">
+            <label>NWS Forecast Office (WFO)</label>
+            <select id="hr-wfo">
+              <option value="">— All Offices —</option>
+              <optgroup label="Texas"><option value="FWD">FWD — Dallas/Fort Worth, TX</option><option value="SHV">SHV — Shreveport, LA/E TX</option><option value="OUN" selected>OUN — Norman (Oklahoma City), OK</option><option value="EPZ">EPZ — El Paso, TX</option><option value="EWX">EWX — Austin/San Antonio, TX</option><option value="HGX">HGX — Houston, TX</option><option value="LUB">LUB — Lubbock, TX</option><option value="MAF">MAF — Midland/Odessa, TX</option><option value="BRO">BRO — Brownsville, TX</option></optgroup>
+              <optgroup label="Oklahoma"><option value="OUN">OUN — Norman, OK</option><option value="TSA">TSA — Tulsa, OK</option></optgroup>
+              <optgroup label="Kansas"><option value="ICT">ICT — Wichita, KS</option><option value="TOP">TOP — Topeka, KS</option><option value="DDC">DDC — Dodge City, KS</option></optgroup>
+              <optgroup label="Colorado"><option value="BOU">BOU — Denver/Boulder, CO</option><option value="PUB">PUB — Pueblo, CO</option></optgroup>
+              <optgroup label="Missouri"><option value="EAX">EAX — Kansas City, MO</option><option value="LSX">LSX — St. Louis, MO</option><option value="SGF">SGF — Springfield, MO</option></optgroup>
+              <optgroup label="Arkansas"><option value="LZK">LZK — Little Rock, AR</option></optgroup>
+              <optgroup label="Louisiana"><option value="LCH">LCH — Lake Charles, LA</option><option value="LIX">LIX — New Orleans, LA</option></optgroup>
+              <optgroup label="Alabama"><option value="BMX">BMX — Birmingham, AL</option><option value="HUN">HUN — Huntsville, AL</option><option value="MOB">MOB — Mobile, AL</option></optgroup>
+              <optgroup label="Tennessee"><option value="OHX">OHX — Nashville, TN</option><option value="MRX">MRX — Morristown, TN</option></optgroup>
+              <optgroup label="North Carolina"><option value="RAH">RAH — Raleigh, NC</option><option value="GSP">GSP — Greenville/Spartanburg, SC</option></optgroup>
+              <optgroup label="Florida"><option value="JAX">JAX — Jacksonville, FL</option><option value="TBW">TBW — Tampa Bay, FL</option><option value="MFL">MFL — Miami, FL</option></optgroup>
+            </select>
+          </div>
+          <div class="hr-field">
+            <label>Date Range</label>
+            <select id="hr-days">
+              <option value="1">Last 24 Hours</option>
+              <option value="3" selected>Last 3 Days</option>
+              <option value="7">Last 7 Days</option>
+              <option value="14">Last 14 Days</option>
+              <option value="30">Last 30 Days</option>
+            </select>
+          </div>
+          <button class="hr-fetch-btn" id="hr-fetch-btn" onclick="hrFetch()">FETCH REPORTS</button>
+        </div>
+
+        <div class="hr-status">
+          <div class="hr-sdot" id="hr-sdot"></div>
+          <span id="hr-stext">Select an office and date range, then click Fetch Reports.</span>
+        </div>
+
+        <div class="hr-stats" id="hr-stats">
+          <div class="hr-stat"><div class="hr-stat-num electric" id="hr-total">—</div><div class="hr-stat-lbl">Total Reports</div></div>
+          <div class="hr-stat"><div class="hr-stat-num danger" id="hr-large">—</div><div class="hr-stat-lbl">≥ 2" Large</div></div>
+          <div class="hr-stat"><div class="hr-stat-num warning" id="hr-sig">—</div><div class="hr-stat-lbl">≥ 1" Sig.</div></div>
+          <div class="hr-stat"><div class="hr-stat-num" id="hr-max" style="color:#c8f0ff">—</div><div class="hr-stat-lbl">Max Size</div></div>
+        </div>
+
+        <div class="hr-filters" id="hr-filters">
+          <span class="hr-flabel">FILTER:</span>
+          <button class="hr-fbtn active" onclick="hrSetFilter('all',this)">All</button>
+          <button class="hr-fbtn" onclick="hrSetFilter('sig',this)">≥ 1" Sig</button>
+          <button class="hr-fbtn" onclick="hrSetFilter('large',this)">≥ 2" Large</button>
+          <button class="hr-fbtn" onclick="hrSetFilter('giant',this)">≥ 3" Giant</button>
+        </div>
+
+        <div class="hr-table-wrap">
+          <div class="hr-thead">
+            <span>TIME</span><span>LOCATION</span><span>SIZE</span><span>WFO</span><span>REMARKS</span>
+          </div>
+          <div id="hr-container">
+            <div class="hr-empty">Select an office and date range above, then click <strong>Fetch Reports</strong>.</div>
+          </div>
+        </div>
+      </div>
+
       <div id="sw-tab-radar" class="sw-tab-content">
         <div class="sw-radar-controls">
           <div style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;">
@@ -1015,6 +1134,189 @@ window.swTogAlerts=function(on){if(swMap&&swAlertLyr){on?swMap.addLayer(swAlertL
 
 swFetch();
 setInterval(swFetch,60000);
+})();
+</script>
+
+<script>
+// ── HAIL REPORTS TAB ──────────────────────────────────────────────────────
+(function(){
+  var hrAllReports = [];
+  var hrFilter = 'all';
+
+  function hrEsc(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function hrSetStatus(state, text) {
+    var dot = document.getElementById('hr-sdot');
+    var txt = document.getElementById('hr-stext');
+    dot.className = 'hr-sdot ' + state;
+    txt.innerHTML = text;
+  }
+
+  window.hrSetFilter = function(f, btn) {
+    hrFilter = f;
+    document.querySelectorAll('.hr-fbtn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+    hrRender();
+  };
+
+  function hrSizeClass(s) {
+    if (!s) return 'small';
+    if (s >= 2.0) return 'large';
+    if (s >= 1.0) return 'medium';
+    return 'small';
+  }
+
+  function hrParseSize(text) {
+    var patterns = [
+      /(\d+\.?\d*)\s*IN(?:CH(?:ES?)?)?(?:\s+DIAMETER)?/i,
+      /(\d+)\/(\d+)\s*IN/i,
+      /PENNY|DIME|NICKEL|QUARTER|HALF\s*DOLLAR|GOLF|BASEBALL|SOFTBALL|TENNIS|GRAPEFRUIT/i
+    ];
+    var sizeMap = { PENNY:0.75, DIME:0.75, NICKEL:0.875, QUARTER:1.0, 'HALF DOLLAR':1.25, 'HALF-DOLLAR':1.25, GOLF:1.75, BASEBALL:2.75, SOFTBALL:4.5, TENNIS:2.5, GRAPEFRUIT:4.0 };
+    var m;
+    if ((m = text.match(/(\d+\.?\d*)\s*IN(?:CH(?:ES?)?)?/i))) return parseFloat(m[1]);
+    if ((m = text.match(/(\d+)\/(\d+)\s*IN/i))) return parseInt(m[1]) / parseInt(m[2]);
+    for (var key in sizeMap) {
+      if (text.toUpperCase().indexOf(key) !== -1) return sizeMap[key];
+    }
+    return null;
+  }
+
+  function hrParseProduct(text, wfo) {
+    var reports = [];
+    var lines = text.split('\n');
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      if (!line.match(/^\d{3,4}\s*[AP]M/i)) continue;
+      if (!line.toUpperCase().includes('HAIL')) {
+        var ctx = lines.slice(i, Math.min(i+3, lines.length)).join(' ');
+        if (!ctx.toUpperCase().includes('HAIL')) continue;
+      }
+      var time = (line.match(/^\d{3,4}\s*[AP]M/) || [''])[0].trim();
+      var parts = line.split(/\s{2,}/);
+      var loc = parts[2] || parts[1] || 'Unknown';
+      var sizeText = line;
+      for (var j = i; j <= Math.min(i+4, lines.length-1); j++) {
+        if (lines[j].toUpperCase().includes('IN') && lines[j].match(/\d+\.?\d*\s*IN/i)) sizeText = lines[j];
+      }
+      var size = hrParseSize(sizeText) || hrParseSize(line);
+      reports.push({
+        time: time,
+        location: loc.trim(),
+        size: size,
+        sizeText: size ? size.toFixed(2)+'"' : 'UNK',
+        wfo: wfo,
+        remarks: ''
+      });
+    }
+    return reports;
+  }
+
+  function hrUpdateStats() {
+    var total = hrAllReports.length;
+    var large = hrAllReports.filter(function(r){ return r.size && r.size >= 2.0; }).length;
+    var sig   = hrAllReports.filter(function(r){ return r.size && r.size >= 1.0; }).length;
+    var max   = hrAllReports.reduce(function(m,r){ return Math.max(m, r.size||0); }, 0);
+    document.getElementById('hr-total').textContent = total;
+    document.getElementById('hr-large').textContent = large;
+    document.getElementById('hr-sig').textContent   = sig;
+    document.getElementById('hr-max').textContent   = max > 0 ? max.toFixed(2)+'"' : '—';
+    document.getElementById('hr-stats').style.display = 'flex';
+    document.getElementById('hr-filters').style.display = 'flex';
+  }
+
+  function hrRender() {
+    var filtered = hrAllReports;
+    if (hrFilter === 'sig')   filtered = hrAllReports.filter(function(r){ return r.size && r.size >= 1.0; });
+    if (hrFilter === 'large') filtered = hrAllReports.filter(function(r){ return r.size && r.size >= 2.0; });
+    if (hrFilter === 'giant') filtered = hrAllReports.filter(function(r){ return r.size && r.size >= 3.0; });
+    filtered.sort(function(a,b){ return (b.size||0)-(a.size||0); });
+    var container = document.getElementById('hr-container');
+    if (!filtered.length) {
+      container.innerHTML = '<div class="hr-empty">No hail reports match the selected filter.</div>';
+      return;
+    }
+    var rows = filtered.map(function(r, idx){
+      return '<div class="hr-row" style="animation-delay:'+Math.min(idx*0.03,0.5)+'s">'
+        +'<div class="hr-cell hr-time" data-label="TIME">'+hrEsc(r.time)+'</div>'
+        +'<div class="hr-cell hr-loc" data-label="LOCATION">'+hrEsc(r.location)+'</div>'
+        +'<div class="hr-cell hr-size '+hrSizeClass(r.size)+'" data-label="SIZE">'+hrEsc(r.sizeText)+'</div>'
+        +'<div class="hr-cell" data-label="WFO"><span class="hr-wfo">'+hrEsc(r.wfo)+'</span></div>'
+        +'<div class="hr-cell hr-remarks" data-label="REMARKS">'+hrEsc((r.remarks||'—').substring(0,200))+'</div>'
+        +'</div>';
+    }).join('');
+    container.innerHTML = '<div class="hr-scroll">'+rows+'</div>';
+  }
+
+  window.hrFetch = async function() {
+    var wfo  = document.getElementById('hr-wfo').value;
+    var days = parseInt(document.getElementById('hr-days').value);
+    var btn  = document.getElementById('hr-fetch-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="hr-spinner"></span> LOADING...';
+    hrAllReports = [];
+    document.getElementById('hr-stats').style.display = 'none';
+    document.getElementById('hr-filters').style.display = 'none';
+    document.getElementById('hr-container').innerHTML = '<div class="hr-empty"><span class="hr-spinner"></span><p style="margin-top:12px">Querying api.weather.gov…</p></div>';
+
+    var start = new Date(Date.now() - days * 86400000).toISOString();
+    var url = wfo
+      ? 'https://api.weather.gov/products?type=LSR&office='+wfo+'&start='+start+'&limit=500'
+      : 'https://api.weather.gov/products?type=LSR&start='+start+'&limit=500';
+
+    hrSetStatus('loading', 'Fetching LSR product list…');
+    try {
+      var listResp = await fetch(url, { headers: { 'User-Agent': 'NTXHail/1.0' } });
+      if (!listResp.ok) throw new Error('API ' + listResp.status);
+      var listData = await listResp.json();
+      var products = listData['@graph'] || [];
+      if (!products.length) {
+        hrSetStatus('', 'No LSR products found. Try a broader date range.');
+        document.getElementById('hr-container').innerHTML = '<div class="hr-empty">No Local Storm Reports found. Try a broader date range or different WFO.</div>';
+        return;
+      }
+      var limit = Math.min(products.length, 40);
+      var fetched = 0;
+      hrSetStatus('loading', 'Found '+products.length+' LSR products — fetching hail data…');
+
+      var promises = products.slice(0, limit).map(function(p, idx){
+        return new Promise(function(res){setTimeout(res, idx*80);}).then(async function(){
+          if (!p['@id']) return;
+          try {
+            var r = await fetch(p['@id'], { headers: { 'User-Agent': 'NTXHail/1.0' } });
+            if (!r.ok) return;
+            var d = await r.json();
+            var txt = d.productText || '';
+            if (!txt.toUpperCase().includes('HAIL')) return;
+            var reps = hrParseProduct(txt, d.issuingOffice || wfo || 'UNK');
+            hrAllReports.push.apply(hrAllReports, reps);
+            fetched++;
+            hrSetStatus('loading', 'Processed '+fetched+'/'+limit+' — found '+hrAllReports.length+' hail reports…');
+          } catch(e){}
+        });
+      });
+
+      await Promise.all(promises);
+
+      if (!hrAllReports.length) {
+        hrSetStatus('success', 'Processed '+limit+' LSR products — no hail reports found.');
+        document.getElementById('hr-container').innerHTML = '<div class="hr-empty">No hail reports found in selected date range.<br>Try expanding the range or selecting a different WFO.</div>';
+      } else {
+        hrSetStatus('success', '✓ Loaded '+hrAllReports.length+' hail report'+(hrAllReports.length!==1?'s':'')+' from '+limit+' LSR products');
+        hrUpdateStats();
+        hrRender();
+      }
+    } catch(err) {
+      hrSetStatus('error', 'Error: '+err.message);
+      document.getElementById('hr-container').innerHTML = '<div class="hr-empty">⚠️ Failed to fetch data from api.weather.gov.<br>'+hrEsc(err.message)+'</div>';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'FETCH REPORTS';
+    }
+  };
 })();
 </script>
 
