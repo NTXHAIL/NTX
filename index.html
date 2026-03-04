@@ -519,6 +519,7 @@ font-size: 12px; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 8px;
 <a href="#locations" class="mobile-link">Locations</a>
 
 <a href="tel:+12143085779">&#128222; 214-308-5779</a>
+<a href="mailto:team@ntxhail.com">&#9993; team@ntxhail.com</a>
 </div>
 
 <!-- HERO -->
@@ -1637,4 +1638,28 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('a[href]').forEach(function (anchor) {
     anchor.addEventListener('click', function (e) {
       var href = this.getAttribute('href');
-      if (!href || href.charAt(0) 
+      if (!href || href.charAt(0)  !== '#') return;
+      var target = document.querySelector(href);
+      if (!target) return;
+      e.preventDefault();
+      var navHeight = 120;
+      var top = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+      // close mobile menu if open
+      if (mobileMenu) {
+        mobileMenu.classList.remove('open');
+        if (hamburgerBtn) {
+          hamburgerBtn.setAttribute('aria-expanded', 'false');
+          var spans = hamburgerBtn.querySelectorAll('span');
+          spans[0].style.transform = '';
+          spans[1].style.opacity   = '';
+          spans[2].style.transform = '';
+        }
+      }
+    });
+  });
+
+});
+</script>
+</body>
+</html>
