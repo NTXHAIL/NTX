@@ -846,37 +846,8 @@ font-size: 12px; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 8px;
     <div class="sw-panel">
       <div class="sw-tabs">
         <button class="sw-tab active" onclick="swTab('radar',this)">Radar</button>
-        <button class="sw-tab" onclick="swTab('alerts',this)">Live Alerts</button>
         <button class="sw-tab" onclick="swTab('hailreports',this)">Hail Reports</button>
 
-      </div>
-      <div id="sw-tab-alerts" class="sw-tab-content">
-        <div class="sw-state-filters">
-          <button class="sw-sbtn active" onclick="swFilter('ALL',this)">ALL</button>
-          <button class="sw-sbtn" onclick="swFilter('TX',this)">TX</button>
-          <button class="sw-sbtn" onclick="swFilter('OK',this)">OK</button>
-          <button class="sw-sbtn" onclick="swFilter('LA',this)">LA</button>
-          <button class="sw-sbtn" onclick="swFilter('AL',this)">AL</button>
-          <button class="sw-sbtn" onclick="swFilter('NC',this)">NC</button>
-          <button class="sw-sbtn" onclick="swFilter('VA',this)">VA</button>
-          <button class="sw-sbtn" onclick="swFilter('AR',this)">AR</button>
-          <button class="sw-sbtn" onclick="swFilter('FL',this)">FL</button>
-          <button class="sw-sbtn" onclick="swFilter('SC',this)">SC</button>
-          <button class="sw-sbtn" onclick="swFilter('TN',this)">TN</button>
-          <button class="sw-sbtn" onclick="swFilter('KY',this)">KY</button>
-          <button class="sw-sbtn" onclick="swFilter('CO',this)">CO</button>
-        </div>
-        <div class="sw-stats">
-          <div class="sw-stat"><div class="sw-stat-num" id="sw-total" style="color:#00b4ff">&#8212;</div><div class="sw-stat-lbl">Total</div></div>
-          <div class="sw-stat"><div class="sw-stat-num" id="sw-extreme" style="color:#ff2d2d">&#8212;</div><div class="sw-stat-lbl">Extreme</div></div>
-          <div class="sw-stat"><div class="sw-stat-num" id="sw-severe" style="color:#ff8c00">&#8212;</div><div class="sw-stat-lbl">Severe</div></div>
-          <div class="sw-stat"><div class="sw-stat-num" id="sw-moderate" style="color:#ffd600">&#8212;</div><div class="sw-stat-lbl">Moderate</div></div>
-        </div>
-        <div class="sw-topbar">
-          <span class="sw-updated" id="sw-updated-ts">Fetching data&hellip;</span>
-          <button class="sw-refresh" onclick="swFetch()">&#8635; Refresh</button>
-        </div>
-        <div id="sw-feed"><div class="sw-empty"><span class="sw-spinner"></span><br><br>Loading NWS alerts&hellip;</div></div>
       </div>
       <div id="sw-tab-hailreports" class="sw-tab-content">
         <style>
@@ -1037,6 +1008,9 @@ var swMap=null,swRadarLyr=null,swAlertLyr=null,swMapReady=false;
 var SW_STATES=['TX','OK','LA','AL','NC','VA','AR','FL','SC','TN','KY','CO'];
 var SEV=['Extreme','Severe','Moderate','Minor','Unknown'];
 function rank(s){var i=SEV.indexOf(s);return i===-1?SEV.length:i;}
+// Safe DOM helpers — the Alerts tab was removed, so its target elements may not exist.
+function setText(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}
+function setHTML(id,v){var el=document.getElementById(id);if(el)el.innerHTML=v;}
 
 window.swFilter=function(state,btn){
   swFilterVal=state;
@@ -1061,8 +1035,8 @@ async function swFetchState(state){
 }
 
 window.swFetch=async function(){
-  document.getElementById('sw-status-text').textContent='FETCHING NWS DATA...';
-  document.getElementById('sw-feed').innerHTML='<div class="sw-empty"><span class="sw-spinner"></span><br><br>Loading alerts...</div>';
+  setText('sw-status-text','FETCHING NWS DATA...');
+  setHTML('sw-feed','<div class="sw-empty"><span class="sw-spinner"></span><br><br>Loading alerts...</div>');
   try{
     var results=await Promise.allSettled(SW_STATES.map(swFetchState));
     var errors=[];
@@ -1073,12 +1047,12 @@ window.swFetch=async function(){
     var seen=new Set();swAlerts=[];
     SW_STATES.forEach(function(s){(swByState[s]||[]).forEach(function(a){if(!seen.has(a.id)){seen.add(a.id);swAlerts.push(a);}});});
     swRender();
-    document.getElementById('sw-status-text').textContent='NWS LIVE - '+swAlerts.length+' ACTIVE';
-    document.getElementById('sw-updated-ts').textContent='Updated: '+new Date().toLocaleTimeString()+(errors.length?' | '+errors.length+' failed':'');
+    setText('sw-status-text','NWS LIVE - '+swAlerts.length+' ACTIVE');
+    setText('sw-updated-ts','Updated: '+new Date().toLocaleTimeString()+(errors.length?' | '+errors.length+' failed':''));
     swPlotMarkers();
   }catch(e){
-    document.getElementById('sw-status-text').textContent='API ERROR - RETRYING';
-    document.getElementById('sw-feed').innerHTML='<div class="sw-empty"><div style="font-size:32px;margin-bottom:8px;">!</div>Could not reach api.weather.gov<br><small style="font-size:11px;color:#6b7280;">'+e.message+'</small></div>';
+    setText('sw-status-text','API ERROR - RETRYING');
+    setHTML('sw-feed','<div class="sw-empty"><div style="font-size:32px;margin-bottom:8px;">!</div>Could not reach api.weather.gov<br><small style="font-size:11px;color:#6b7280;">'+e.message+'</small></div>');
   }
 };
 
@@ -1088,10 +1062,11 @@ function swRender(){
   var sorted=src.slice().sort(function(a,b){return rank(a.properties.severity)-rank(b.properties.severity);});
   var counts={Extreme:0,Severe:0,Moderate:0,Minor:0};
   src.forEach(function(a){var s=a.properties.severity;if(counts[s]!==undefined)counts[s]++;});
-  document.getElementById('sw-total').textContent=src.length;
-  document.getElementById('sw-extreme').textContent=counts.Extreme;
-  document.getElementById('sw-severe').textContent=counts.Severe;
-  document.getElementById('sw-moderate').textContent=counts.Moderate;
+  setText('sw-total',src.length);
+  setText('sw-extreme',counts.Extreme);
+  setText('sw-severe',counts.Severe);
+  setText('sw-moderate',counts.Moderate);
+  if(!feed)return; // Alerts tab removed — skip feed rendering
   if(!sorted.length){
     var lbl=swFilterVal==='ALL'?'the selected states':swFilterVal;
     feed.innerHTML='<div class="sw-empty"><div style="font-size:32px;color:#00e676;margin-bottom:8px;">&#10003;</div>No active alerts for '+lbl+'.</div>';
