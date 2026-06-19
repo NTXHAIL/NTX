@@ -1434,7 +1434,7 @@ setTimeout(function(){swInitMap();},150);
 <div class="footer-bottom">
 <span>&copy; 2025 NTX Hail. All rights reserved.</span>
 <span>Nationwide Hail Damage Repair Specialists</span>
-<a href="privacy-policy.html" style="color:rgba(255,255,255,0.45);font-size:13px;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Privacy Policy</a>
+<a href="#" onclick="document.getElementById('privacyModal').style.display='flex';return false;" style="color:rgba(255,255,255,0.45);font-size:13px;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.45)'">Privacy Policy &amp; SMS Terms</a>
 </div>
 </footer>
 
@@ -1520,8 +1520,8 @@ setTimeout(function(){swInitMap();},150);
 <div id="privacyModal" role="dialog" aria-modal="true" aria-labelledby="privacyModalTitle">
   <div class="modal-box">
     <button class="modal-close" onclick="document.getElementById('privacyModal').style.display='none'" aria-label="Close">&times;</button>
-    <h2 id="privacyModalTitle">Privacy Policy</h2>
-    <p class="modal-date">Effective Date: January 19, 2025</p>
+    <h2 id="privacyModalTitle">Privacy Policy &amp; SMS Terms of Service</h2>
+    <p class="modal-date">Effective Date: June 18, 2026</p>
 
     <h3>Introduction</h3>
     <p>At NTX HAIL, we are committed to protecting the privacy of our customers and website visitors. This Privacy Policy outlines how we collect, use, and safeguard your personal information when you interact with our services or website. We value your trust and strive to maintain transparent and ethical data handling practices.</p>
@@ -1529,7 +1529,7 @@ setTimeout(function(){swInitMap();},150);
     <h3>Information We Collect</h3>
     <p>We may collect the following types of information:</p>
     <ul>
-      <li><strong>Personal Information:</strong> This includes your name, email address, phone number, and physical address. We collect this information when you provide it to us directly, such as when you request a service, schedule an appointment, or provide feedback.</li>
+      <li><strong>Personal Information:</strong> This includes your name, email address, phone number, and physical address. We collect this information when you provide it to us directly, such as when you request a service, schedule an appointment, submit a web form, or provide feedback.</li>
       <li><strong>Vehicle Information:</strong> This includes your vehicle's make, model, year, and VIN. We collect this information to provide accurate repair estimates and services.</li>
       <li><strong>Website Usage Data:</strong> We may collect information about your interactions with our website, such as your IP address, browser type, and pages visited. This information helps us improve our website and user experience.</li>
     </ul>
@@ -1537,21 +1537,32 @@ setTimeout(function(){swInitMap();},150);
     <h3>How We Use Your Information</h3>
     <p>We use your information for the following purposes:</p>
     <ul>
-      <li><strong>Providing and Improving Services:</strong> We use your information to schedule appointments, provide repair estimates, process payments, and deliver excellent customer service.</li>
-      <li><strong>Communication:</strong> We may use your contact information to send you appointment reminders, service updates, and respond to your inquiries.</li>
-      <li><strong>Marketing Communications:</strong> With your consent, we may send you emails or newsletters about our services, promotions, and company news. You can opt-out of these communications at any time.</li>
-      <li><strong>Website Analytics:</strong> We use website usage data to analyze trends, improve our website content, and enhance user experience.</li>
+      <li><strong>Providing and Improving Services:</strong> To schedule appointments, provide repair estimates, process payments, and deliver excellent customer service.</li>
+      <li><strong>Communication:</strong> To send you appointment reminders, service updates, and respond to your inquiries via phone, email, or text message.</li>
+      <li><strong>Marketing Communications:</strong> With your explicit consent, we may send you emails, newsletters, or promotional text messages about our services, promotions, and company news. You can opt-out of these communications at any time.</li>
+      <li><strong>Website Analytics:</strong> To analyze trends, improve our website content, and enhance user experience.</li>
     </ul>
 
-    <h3>Data Sharing</h3>
-    <p>We do not share your personal information with third parties, except in the following circumstances:</p>
+    <h3>Data Sharing &amp; Mobile Privacy Guardrails</h3>
+    <p>We do not sell, rent, or share your personal information with third parties, except in the following limited circumstances:</p>
     <ul>
-      <li><strong>Service Providers:</strong> We may share information with trusted third-party service providers who assist us with payment processing, data storage, and other essential functions. These providers are obligated to protect your information.</li>
+      <li><strong>Service Providers:</strong> We may share information with trusted third-party service providers who assist us with payment processing, data storage, and other essential functions. These providers are contractually obligated to protect your information.</li>
       <li><strong>Legal Compliance:</strong> We may disclose information if required by law or legal process.</li>
     </ul>
+    <p>No mobile opt-in or text message consent will be shared with third parties, affiliates, or partners for marketing or promotional purposes. Your SMS consent and phone number data are strictly used for communication between you and NTX HAIL and will not be disclosed to any outside entities.</p>
 
     <h3>Data Security</h3>
-    <p>We take reasonable measures to protect your information from unauthorized access, use, or disclosure. We use secure third-party applications, such as CCC One and Mobile Tech RX, to manage customer data and ensure its security.</p>
+    <p>We take reasonable technical and organizational measures to protect your information from unauthorized access, use, or disclosure. We use secure third-party applications, such as CCC One and Mobile Tech RX, to manage customer data and ensure its security.</p>
+
+    <h3>SMS Terms of Service</h3>
+    <p>By providing your phone number and opting in to receive text messages from NTX HAIL, you agree to the following terms:</p>
+    <ul>
+      <li><strong>Message Types:</strong> If you consent to receive conversational, informational, or promotional SMS from NTX HAIL, you agree to receive appointment reminders, service updates, estimates, and promotional text messages from us.</li>
+      <li><strong>Opt-Out:</strong> You can cancel the SMS service at any time. Just text STOP to opt-out. After you send the SMS message STOP to us, we will send you an SMS message to confirm that you have been unsubscribed. After this, you will no longer receive SMS messages from us.</li>
+      <li><strong>Support:</strong> If you are experiencing issues with the messaging program you can reply with the keyword HELP for more assistance, or you can get help directly at team@ntxhail.com or 214-308-5779.</li>
+      <li><strong>Rates &amp; Frequency:</strong> Message &amp; data rates may apply. Messaging frequency may vary based on your interaction and service cycle.</li>
+      <li><strong>Policy Links:</strong> Visit our website footer to view our full Privacy Policy and Terms and Conditions.</li>
+    </ul>
 
     <h3>Your Rights</h3>
     <p>You have the following rights regarding your personal information:</p>
@@ -1561,15 +1572,15 @@ setTimeout(function(){swInitMap();},150);
       <li><strong>Deletion:</strong> You can request deletion of your information, subject to certain legal obligations.</li>
     </ul>
 
+    <h3>Updates to this Privacy Policy</h3>
+    <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated effective date.</p>
+
     <h3>Contact Us</h3>
-    <p>If you have any questions or concerns about this Privacy Policy, please contact us at:</p>
+    <p>If you have any questions or concerns about this Privacy Policy or our SMS practices, please contact us at:</p>
     <p><strong>NTX HAIL</strong><br>
     904 S Woodrow Ln, Denton, TX 76205<br>
     <a href="tel:+12143085779">214-308-5779</a><br>
     <a href="mailto:team@ntxhail.com">team@ntxhail.com</a></p>
-
-    <h3>Updates to this Privacy Policy</h3>
-    <p>We may update this Privacy Policy from time to time. Any changes will be posted on our website.</p>
   </div>
 </div>
 
