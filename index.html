@@ -829,6 +829,7 @@ font-size: 12px; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 8px;
 #stormwatch .sw-layer-toggle input{cursor:pointer;accent-color:var(--red)}
 #stormwatch .leaflet-container{background:var(--off-white)!important}
 #stormwatch .leaflet-tile-pane{filter:brightness(.85) saturate(1.2)}
+#stormwatch .leaflet-swBase-pane{filter:invert(1) hue-rotate(180deg) brightness(.95) contrast(.9) saturate(.8)}
 #stormwatch .leaflet-control-zoom a{background:var(--white)!important;color:var(--dark)!important;border-color:var(--border)!important}
 #stormwatch .leaflet-control-attribution{background:rgba(255,255,255,.85)!important;color:var(--gray)!important;font-size:9px!important}
 #stormwatch .sw-divider{height:1px;background:var(--border);margin:16px 0}
@@ -1088,8 +1089,10 @@ function swInitMap(){
   if(swMapReady)return;
   swMapReady=true;
   swMap=L.map('sw-map',{center:[33.5,-89.0],zoom:5});
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
-    attribution:'&copy; OpenStreetMap &copy; CARTO',subdomains:'abcd',maxZoom:19
+  swMap.createPane('swBase');
+  swMap.getPane('swBase').style.zIndex=190;
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'&copy; OpenStreetMap contributors',subdomains:'abc',maxZoom:19,pane:'swBase'
   }).addTo(swMap);
   swRadarLyr=L.tileLayer.wms('https://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0q.cgi?',{
     layers:'nexrad-n0q-900913',format:'image/png',transparent:true,opacity:0.8,tileSize:256
