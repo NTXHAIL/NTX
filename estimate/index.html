@@ -564,33 +564,47 @@ font-size: 12px; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 8px;
   font-family: "Bebas Neue", sans-serif; font-size: 28px; letter-spacing: 1px;
   color: var(--dark); margin: 8px 0 14px;
 }
-.estimate-steps {
-  list-style: none; counter-reset: step; display: grid; gap: 12px;
-  margin: 0 0 18px; padding: 0;
-}
-.estimate-steps li {
-  counter-increment: step; display: flex; gap: 14px; align-items: flex-start;
+.estimate-tip {
   background: var(--white); border: 1px solid var(--border); border-radius: 12px;
   padding: 16px 18px; font-size: 15px; line-height: 1.6; color: var(--dark);
-}
-.estimate-steps li::before {
-  content: counter(step); flex: 0 0 36px; height: 36px; border-radius: 10px;
-  background: var(--blue-pale); color: var(--blue);
-  font-family: "Bebas Neue", sans-serif; font-size: 22px; line-height: 36px;
-  text-align: center;
+  margin: 0 0 18px;
 }
 .estimate-note {
   background: var(--red-pale); border: 1px solid rgba(198,40,40,0.25);
   color: var(--dark); border-radius: 10px; padding: 14px 16px;
   font-size: 14px; font-weight: 600; line-height: 1.6; margin: 0 0 32px;
 }
+html, body {
+  height: auto;
+  overflow-x: clip;
+  overflow-y: auto;
+}
+.legal.estimate-page,
+.estimate-page .legal-inner,
+.estimate-form {
+  height: auto;
+  max-height: none;
+  overflow: visible;
+}
 .estimate-form {
   background: var(--white); border: 1px solid var(--border); border-radius: 16px;
-  height: 1600px; overflow: hidden; box-shadow: 0 8px 48px rgba(21,101,192,0.08);
+  box-shadow: 0 8px 48px rgba(21,101,192,0.08);
 }
+.estimate-form iframe {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-height: 1500px;
+  border: none;
+}
+.estimate-scroll-pad { height: 120px; }
 @media (max-width: 600px) {
   .estimate-lead { font-size: 16px; }
-  .estimate-steps li { padding: 14px; }
+}
+@media (max-width: 768px) {
+  .estimate-form iframe { min-height: 2200px; }
+  .legal.estimate-page { padding-bottom: 200px; }
+  .estimate-scroll-pad { height: 160px; }
 }
 </style>
 </head>
@@ -635,17 +649,13 @@ font-size: 12px; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 8px;
     <h1>Get a Free Hail Damage <em>Photo Estimate</em></h1>
     <p class="estimate-lead">Send a few phone photos and a technician will reply with an estimate within 2 business hours.</p>
     <h2>Photo guide</h2>
-    <ol class="estimate-steps">
-      <li>Step back and capture each panel whole.</li>
-      <li>Shoot low and at an angle so dents catch the light.</li>
-      <li>Line up a reflection (like a straight line or building edge) across the dents.</li>
-      <li>For hail, get the hood, roof, trunk and both sides.</li>
-    </ol>
+    <p class="estimate-tip">Step back and capture each panel whole.</p>
     <p class="estimate-note">Hail damage only. Door dings, lease returns, and other non-hail dents are not part of this estimate.</p>
     <h2>Send your photos</h2>
     <div class="estimate-form">
-      <iframe src="https://api.leadconnectorhq.com/widget/form/dsQjqW6FwRZgbEqR7jXO" style="width:100%;height:100%;border:none;border-radius:3px" id="inline-dsQjqW6FwRZgbEqR7jXO" data-layout="{'id':'INLINE'}" data-trigger-type="alwaysShow" data-trigger-value="" data-activation-type="alwaysActivated" data-activation-value="" data-deactivation-type="neverDeactivate" data-deactivation-value="" data-form-name="NTX Hail Photo Estimate" data-height="1600" data-layout-iframe-id="inline-dsQjqW6FwRZgbEqR7jXO" data-form-id="dsQjqW6FwRZgbEqR7jXO" title="NTX Hail Photo Estimate"></iframe>
+      <iframe src="https://api.leadconnectorhq.com/widget/form/dsQjqW6FwRZgbEqR7jXO" style="width:100%;border:none;border-radius:3px" id="inline-dsQjqW6FwRZgbEqR7jXO" data-layout="{'id':'INLINE'}" data-trigger-type="alwaysShow" data-trigger-value="" data-activation-type="alwaysActivated" data-activation-value="" data-deactivation-type="neverDeactivate" data-deactivation-value="" data-form-name="NTX Hail Photo Estimate" data-height="1600" data-layout-iframe-id="inline-dsQjqW6FwRZgbEqR7jXO" data-form-id="dsQjqW6FwRZgbEqR7jXO" title="NTX Hail Photo Estimate"></iframe>
     </div>
+    <div class="estimate-scroll-pad" aria-hidden="true"></div>
     <script src="https://link.msgsndr.com/js/form_embed.js"></script>
   </div>
 </main>
