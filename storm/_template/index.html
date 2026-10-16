@@ -757,6 +757,24 @@ html, body {
 }
 
 </style>
+<style id="chat-clearance">
+@media (max-width: 768px) {
+  .mobile-menu {
+    max-height: calc(100dvh - 90px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 104px;
+  }
+  footer { padding-bottom: 104px; }
+}
+@media (max-width: 768px) and (max-height: 720px) {
+  .hero-badge { margin-bottom: 12px; }
+  .hero-content { padding-top: 8px; padding-bottom: 4px; }
+  .hero h1 { font-size: 32px; line-height: 0.95; }
+  .hero-desc { margin-bottom: 12px; font-size: 14px; }
+}
+</style>
+<script src="https://link.msgsndr.com/js/external-tracking.js" data-tracking-id="tk_5fa66d4adc4f49ddbaf8c315eaa45f36"></script>
 </head>
 <body>
 
@@ -858,7 +876,25 @@ html, body {
       <h2 id="contact">Contact us</h2>
       <p>Send a message about this storm. A teammate will follow up. For a hail-damage estimate from photos, use Get a Photo Estimate.</p>
       <div class="storm-form">
-        <iframe src="https://api.leadconnectorhq.com/widget/form/4MmX2oY1DsC4IUDipWzH" style="width:100%;border:none;border-radius:3px" id="inline-4MmX2oY1DsC4IUDipWzH" data-layout="{'id':'INLINE'}" data-trigger-type="alwaysShow" data-trigger-value="" data-activation-type="alwaysActivated" data-activation-value="" data-deactivation-type="neverDeactivate" data-deactivation-value="" data-form-name="NTX Hail Contact" data-height="1600" data-layout-iframe-id="inline-4MmX2oY1DsC4IUDipWzH" data-form-id="4MmX2oY1DsC4IUDipWzH" title="Contact NTX Hail"></iframe>
+        <iframe src="https://api.leadconnectorhq.com/widget/form/4MmX2oY1DsC4IUDipWzH" style="width:100%;border:none;border-radius:3px" loading="lazy" id="inline-4MmX2oY1DsC4IUDipWzH" data-layout="{'id':'INLINE'}" data-trigger-type="alwaysShow" data-trigger-value="" data-activation-type="alwaysActivated" data-activation-value="" data-deactivation-type="neverDeactivate" data-deactivation-value="" data-form-name="NTX Hail Contact" data-height="1600" data-layout-iframe-id="inline-4MmX2oY1DsC4IUDipWzH" data-form-id="4MmX2oY1DsC4IUDipWzH" title="Contact NTX Hail"></iframe>
+<script>
+(function () {
+  var iframe = document.currentScript && document.currentScript.previousElementSibling;
+  if (!iframe || iframe.tagName !== "IFRAME") return;
+  var allowed = ["first_name", "last_name", "full_name", "phone", "email"];
+  var incoming = new URLSearchParams(window.location.search);
+  var extra = new URLSearchParams();
+  allowed.forEach(function (key) {
+    var value = incoming.get(key);
+    if (value) extra.append(key, value);
+  });
+  var qs = extra.toString();
+  if (!qs) return;
+  var src = iframe.getAttribute("src") || "";
+  iframe.setAttribute("src", src + (src.indexOf("?") === -1 ? "?" : "&") + qs);
+})();
+</script>
+
       </div>
       <div class="storm-scroll-pad" aria-hidden="true"></div>
       <script src="https://link.msgsndr.com/js/form_embed.js"></script>
@@ -974,6 +1010,6 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
-<script src="https://widgets.leadconnectorhq.com/loader.js" data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js" data-widget-id="6ace48e3e19e4c46e82be7a5"></script>
+<script src="https://widgets.leadconnectorhq.com/loader.js" data-resources-url="https://widgets.leadconnectorhq.com/chat-widget/loader.js" data-widget-id="6ad218fde0d80451b7f2b54a"></script>
 </body>
 </html>
