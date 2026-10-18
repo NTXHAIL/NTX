@@ -560,6 +560,7 @@ font-size: 12px; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 8px;
 
 .legal-inner > p { font-size: 16px; line-height: 1.75; color: #3d4d60; margin: 0 0 16px; }
 #service-areas { background: var(--off-white); }
+.footer-areas p { margin: 0 0 12px; max-width: 42rem; color: rgba(255,255,255,0.72); font-size: 13px; line-height: 1.5; }
 .footer-areas {
   padding: 4px 0 28px;
   border-bottom: 1px solid rgba(255,255,255,0.08);
@@ -738,106 +739,10 @@ a.reach-email:hover, a.btn-email:hover { background: #111827; color: #fff !impor
     "postalCode": "76205",
     "addressCountry": "US"
   },
-  "areaServed": [
-    {
-      "@type": "City",
-      "name": "Denton",
-      "address": {
-        "@type": "PostalAddress",
-        "addressRegion": "TX",
-        "addressCountry": "US"
-      }
-    },
-    {
-      "@type": "City",
-      "name": "Frisco",
-      "address": {
-        "@type": "PostalAddress",
-        "addressRegion": "TX",
-        "addressCountry": "US"
-      }
-    },
-    {
-      "@type": "City",
-      "name": "McKinney",
-      "address": {
-        "@type": "PostalAddress",
-        "addressRegion": "TX",
-        "addressCountry": "US"
-      }
-    },
-    {
-      "@type": "City",
-      "name": "Plano",
-      "address": {
-        "@type": "PostalAddress",
-        "addressRegion": "TX",
-        "addressCountry": "US"
-      }
-    },
-    {
-      "@type": "City",
-      "name": "Dallas",
-      "address": {
-        "@type": "PostalAddress",
-        "addressRegion": "TX",
-        "addressCountry": "US"
-      }
-    },
-    {
-      "@type": "City",
-      "name": "Fort Worth",
-      "address": {
-        "@type": "PostalAddress",
-        "addressRegion": "TX",
-        "addressCountry": "US"
-      }
-    },
-    {
-      "@type": "City",
-      "name": "Lewisville",
-      "address": {
-        "@type": "PostalAddress",
-        "addressRegion": "TX",
-        "addressCountry": "US"
-      }
-    },
-    {
-      "@type": "City",
-      "name": "Allen",
-      "address": {
-        "@type": "PostalAddress",
-        "addressRegion": "TX",
-        "addressCountry": "US"
-      }
-    },
-    {
-      "@type": "City",
-      "name": "Prosper",
-      "address": {
-        "@type": "PostalAddress",
-        "addressRegion": "TX",
-        "addressCountry": "US"
-      }
-    },
-    {
-      "@type": "City",
-      "name": "Little Elm",
-      "address": {
-        "@type": "PostalAddress",
-        "addressRegion": "TX",
-        "addressCountry": "US"
-      }
-    },
-    {
-      "@type": "AdministrativeArea",
-      "name": "North Texas"
-    },
-    {
-      "@type": "AdministrativeArea",
-      "name": "Dallas-Fort Worth"
-    }
-  ],
+  "areaServed": {
+    "@type": "State",
+    "name": "Texas"
+  },
   "makesOffer": [
     {
       "@type": "Offer",
@@ -1036,6 +941,7 @@ a.reach-email:hover, a.btn-email:hover { background: #111827; color: #fff !impor
 </div>
 <div class="footer-areas">
 <h5>Service Areas</h5>
+<p>Headquartered in Denton. Serving all of Texas.</p>
 <nav aria-label="Service areas">
 <a href="/hail-repair-denton/">Denton</a>
 <a href="/hail-repair-frisco/">Frisco</a>

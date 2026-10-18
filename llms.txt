@@ -1,6 +1,6 @@
 # NTX Hail
 
-NTX Hail is the DBA of Dakine Investments LLC, an auto hail repair business at 904 S Woodrow Ln, Denton, TX 76205. The company repairs hail-damaged vehicles and helps customers understand insurance claims. It serves North Texas from that Denton office.
+NTX Hail is the DBA of Dakine Investments LLC, an auto hail repair business headquartered at 904 S Woodrow Ln, Denton, TX 76205. The company repairs hail-damaged vehicles and helps customers understand insurance claims. It serves the entire state of Texas.
 
 NTX Hail does not waive, rebate, or pay insurance deductibles.
 
@@ -10,6 +10,8 @@ NTX Hail does not waive, rebate, or pay insurance deductibles.
 - NTX - Claims Services: help understanding a hail damage claim. This is not a promise that an insurer will approve or pay a claim.
 
 ## Service areas
+
+Service covers all of Texas. These city pages are examples, not a limit:
 
 - Denton: https://www.ntxhail.com/hail-repair-denton/
 - Frisco: https://www.ntxhail.com/hail-repair-frisco/
