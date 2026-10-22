@@ -1,6 +1,9 @@
 /* Native photo estimate for the public GoHighLevel form dsQjqW6FwRZgbEqR7jXO.
    Photos are resized in the browser, then posted as multipart to the same
-   endpoint the embedded widget uses. No API token is included. */
+   endpoint the embedded widget uses. No API secret is included. The Turnstile
+   value below is the public site key already shipped in that widget.
+   The JSON body uses location_id. The submit service reads that field, and
+   the query string alone is not enough. */
 (function () {
   var FORM_ID = "dsQjqW6FwRZgbEqR7jXO";
   var LOCATION_ID = "o6DlmLuYCNFntSijxhMG";
@@ -15,6 +18,7 @@
   var MAX_FILES = 20;
   var SUBMIT_URL = "https://backend.leadconnectorhq.com/forms/submit?formId=" + FORM_ID + "&locationId=" + LOCATION_ID;
   var WIDGET_URL = "https://api.leadconnectorhq.com/widget/form/" + FORM_ID;
+  var TURNSTILE_SITE_KEY = "0x4AAAAAADGOG81Uj_PjZazJ";
   var TERMS_HTML = [
     '<p style="font-family: Inter;font-size: 16px;font-weight: 400;color: #344054FF;">By checking this box, I consent to receive non-marketing text messages from NTX Hail about estimate updates, appointment scheduling and repair status. Message frequency varies, message &amp; data rates may apply. Text HELP for assistance, reply STOP to opt out.</p>',
     '<p style="font-family: Inter;font-size: 16px;font-weight: 400;color: #344054FF;">By checking this box, I consent to receive marketing and promotional messages including special offers, discounts, new product updates among others, from NTX Hail at the phone number provided. Frequency may vary. Message &amp; data rates may apply. Text HELP for assistance, reply STOP to opt out.</p>'
@@ -26,6 +30,10 @@
   var photos = [];
   var busy = false;
   var heicLoader = null;
+  var turnstileWidgetId = null;
+  var turnstileToken = "";
+  var turnstileLoader = null;
+  var turnstileHost = null;
 
   function textFromHtml(html) {
     var doc = new DOMParser().parseFromString(html, "text/html");
@@ -178,7 +186,7 @@
     var data = queryParams();
     var fields = {
       formId: FORM_ID,
-      locationId: LOCATION_ID,
+      location_id: LOCATION_ID,
       Timezone: timezoneLabel(),
       timeSpent: Math.round((Date.now() - started) / 1000),
       eventData: {
@@ -262,6 +270,78 @@
     if (Array.isArray(body.message)) return body.message.join(" ");
     if (typeof body.msg === "string") return body.msg;
     return "";
+  }
+
+  function loadTurnstileApi() {
+    if (window.turnstile) return Promise.resolve();
+    if (turnstileLoader) return turnstileLoader;
+    turnstileLoader = new Promise(function (resolve, reject) {
+      var script = document.createElement("script");
+      script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+      script.async = true;
+      script.onload = function () { resolve(); };
+      script.onerror = function () {
+        turnstileLoader = null;
+        reject(new Error("The security check could not load. Please try again."));
+      };
+      document.head.appendChild(script);
+    });
+    return turnstileLoader;
+  }
+
+  function resetTurnstile() {
+    turnstileToken = "";
+    if (window.turnstile && turnstileWidgetId != null) {
+      try { window.turnstile.reset(turnstileWidgetId); } catch (e) {}
+    }
+  }
+
+  function startTurnstile() {
+    if (!turnstileHost) return Promise.resolve();
+    return loadTurnstileApi().then(function () {
+      if (turnstileWidgetId != null || !window.turnstile) return;
+      turnstileWidgetId = window.turnstile.render(turnstileHost, {
+        sitekey: TURNSTILE_SITE_KEY,
+        action: "form-submit",
+        callback: function (token) { turnstileToken = token || ""; },
+        "error-callback": function () {
+          turnstileToken = "";
+          return true;
+        },
+        "expired-callback": function () { turnstileToken = ""; }
+      });
+    });
+  }
+
+  function readTurnstileToken() {
+    if (turnstileToken) return turnstileToken;
+    if (!turnstileHost) return "";
+    var input = turnstileHost.querySelector("input[name='cf-turnstile-response']");
+    if (input && input.value) {
+      turnstileToken = input.value;
+      return turnstileToken;
+    }
+    return "";
+  }
+
+  function waitForTurnstileToken() {
+    return startTurnstile().then(function () {
+      var existing = readTurnstileToken();
+      if (existing) return existing;
+      return new Promise(function (resolve, reject) {
+        var startedAt = Date.now();
+        var timer = setInterval(function () {
+          var token = readTurnstileToken();
+          if (token) {
+            clearInterval(timer);
+            resolve(token);
+          } else if (Date.now() - startedAt > 30000) {
+            clearInterval(timer);
+            reject(new Error("The security check did not finish. Please try again."));
+          }
+        }, 200);
+      });
+    });
   }
 
   var root, form, statusNode, progressNode, progressBar, photoList, fileInput, submitBtn, fallbackHost;
@@ -383,43 +463,53 @@
     progressNode.hidden = false;
     progressBar.style.width = "0%";
     progressBar.parentNode.setAttribute("aria-valuenow", "0");
-    setStatus("Uploading compressed photos…", "info");
-    var fd = new FormData();
-    var payload = buildPayload(form);
-    fd.set("formData", JSON.stringify(payload));
-    fd.append("locationId", LOCATION_ID);
-    fd.append("formId", FORM_ID);
-    photos.forEach(function (photo) { fd.append(FILE_FIELD, photo.file, photo.file.name); });
-    var simpleBody = new FormData();
-    simpleBody.set("formData", fd.get("formData"));
-    simpleBody.append("locationId", LOCATION_ID);
-    simpleBody.append("formId", FORM_ID);
-    photos.forEach(function (photo) { simpleBody.append(FILE_FIELD, photo.file, photo.file.name); });
-
-    postMultipart(fd, function (ratio) {
-      var pct = Math.round(ratio * 100);
-      progressBar.style.width = pct + "%";
-      progressBar.parentNode.setAttribute("aria-valuenow", String(pct));
-    }).catch(function (error) {
-      if (error && error.sawBytes) throw error;
-      setStatus("Sending photos…", "info");
-      return postSimple(simpleBody);
+    setStatus("Checking this browser…", "info");
+    waitForTurnstileToken().then(function (token) {
+      setStatus("Uploading compressed photos…", "info");
+      var fd = new FormData();
+      var payload = buildPayload(form);
+      fd.set("formData", JSON.stringify(payload));
+      fd.append("locationId", LOCATION_ID);
+      fd.append("formId", FORM_ID);
+      fd.append("turnstileNonInteractiveToken", token);
+      photos.forEach(function (photo) { fd.append(FILE_FIELD, photo.file, photo.file.name); });
+      var simpleBody = new FormData();
+      simpleBody.set("formData", fd.get("formData"));
+      simpleBody.append("locationId", LOCATION_ID);
+      simpleBody.append("formId", FORM_ID);
+      simpleBody.append("turnstileNonInteractiveToken", token);
+      photos.forEach(function (photo) { simpleBody.append(FILE_FIELD, photo.file, photo.file.name); });
+      return postMultipart(fd, function (ratio) {
+        var pct = Math.round(ratio * 100);
+        progressBar.style.width = pct + "%";
+        progressBar.parentNode.setAttribute("aria-valuenow", String(pct));
+      }).catch(function (error) {
+        if (error && error.sawBytes) throw error;
+        setStatus("Sending photos…", "info");
+        return postSimple(simpleBody);
+      });
     }).then(function (result) {
       if (accepted(result)) {
         progressBar.style.width = "100%";
         window.location.assign("/estimate/thanks/");
         return;
       }
+      resetTurnstile();
       var detail = serverMessage(result);
       setStatus(detail || "The estimate did not go through. Use the standard form below.", "error");
       showFallback();
     }).catch(function (error) {
+      resetTurnstile();
+      if (error && error.message && error.message.indexOf("security check") !== -1) {
+        setStatus(error.message, "error");
+        return;
+      }
       if (error && error.sawBytes) {
         setStatus("The upload finished, but the estimate desk did not confirm it. If you do not hear back, use the standard form below.", "error");
       } else if (error && error.message === "timeout") {
         setStatus("The upload timed out. Use the standard form below.", "error");
       } else {
-        setStatus("The fast upload could not reach the estimate desk from this browser. Use the standard form below.", "error");
+        setStatus(error && error.message ? error.message : "The fast upload could not reach the estimate desk from this browser. Use the standard form below.", "error");
       }
       showFallback();
     }).then(function () {
@@ -509,6 +599,7 @@
     statusNode = el("div", { class: "pe-status", role: "status" });
     statusNode.hidden = true;
     submitBtn = el("button", { type: "submit", class: "pe-submit", text: "Get My Estimate" });
+    turnstileHost = el("div", { class: "pe-turnstile" });
     fallbackHost = el("div", { class: "pe-fallback" });
     fallbackHost.hidden = true;
     var prefill = queryParams().prefill;
@@ -547,6 +638,7 @@
       field("Notes (optional)", notes),
       el("label", { class: "pe-check" }, [consent1, el("span", { text: termText[0] })]),
       el("label", { class: "pe-check" }, [consent2, el("span", { text: termText[1] })]),
+      turnstileHost,
       progressNode,
       statusNode,
       submitBtn,
@@ -563,6 +655,7 @@
     });
     form.addEventListener("submit", onSubmit);
     host.appendChild(form);
+    startTurnstile().catch(function () {});
   }
 
   function boot() {
