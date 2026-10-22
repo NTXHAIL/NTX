@@ -9,6 +9,8 @@
 <link rel="canonical" href="https://www.ntxhail.com/phoenix/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://backend.leadconnectorhq.com" crossorigin>
+<link rel="preconnect" href="https://api.leadconnectorhq.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="preload" as="image" href="/phoenix/logo.png">
 <script src="https://link.msgsndr.com/js/external-tracking.js" data-tracking-id="tk_5fa66d4adc4f49ddbaf8c315eaa45f36"></script>
@@ -41,6 +43,16 @@ a { color: inherit; }
   background: #fff; color: var(--dark); padding: 8px 12px; border-radius: 6px;
 }
 .skip:focus { top: 8px; }
+.update-notice {
+  background: var(--blue-pale);
+  color: var(--dark);
+  border-bottom: 1px solid rgba(21, 101, 192, 0.18);
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  padding: 10px 16px;
+}
 header {
   position: sticky; top: 0; z-index: 20;
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
@@ -115,13 +127,6 @@ a.email:hover { background: #111827; color: #fff; }
   border: 1px solid var(--border);
   border-radius: 16px;
   box-shadow: 0 8px 32px rgba(21,101,192,0.08);
-  overflow: hidden;
-}
-.form-card iframe {
-  display: block;
-  width: 100%;
-  min-height: 1180px;
-  border: 0;
 }
 footer {
   max-width: 760px;
@@ -139,7 +144,6 @@ footer a:hover { text-decoration: underline; }
   main { padding-top: 40px; }
   .points { grid-template-columns: 1fr 1fr 1fr; }
   .reach a { flex: 0 0 auto; min-width: 140px; }
-  .form-card iframe { min-height: 1080px; }
 }
 </style>
 </head>
@@ -152,6 +156,7 @@ footer a:hover { text-decoration: underline; }
     <a class="email" href="mailto:team@ntxhail.com">Email</a>
   </div>
 </header>
+<p class="update-notice">Update: Local repair facility pending approval.</p>
 <main>
   <p class="badge">October 2026 storms</p>
   <h1>Phoenix-area <em>hail repair</em></h1>
@@ -178,25 +183,8 @@ footer a:hover { text-decoration: underline; }
       <a class="email" href="mailto:team@ntxhail.com">Email</a>
     </div>
     <div class="form-card">
-      <iframe id="inline-dsQjqW6FwRZgbEqR7jXO" style="width:100%;border:none;border-radius:3px" data-layout="{'id':'INLINE'}" data-trigger-type="alwaysShow" data-trigger-value="" data-activation-type="alwaysActivated" data-activation-value="" data-deactivation-type="neverDeactivate" data-deactivation-value="" data-form-name="NTX Hail Photo Estimate" data-height="1600" data-layout-iframe-id="inline-dsQjqW6FwRZgbEqR7jXO" data-form-id="dsQjqW6FwRZgbEqR7jXO" title="NTX Hail Photo Estimate"></iframe>
-      <script>
-      (function () {
-        var iframe = document.getElementById("inline-dsQjqW6FwRZgbEqR7jXO");
-        if (!iframe) return;
-        var base = "https://api.leadconnectorhq.com/widget/form/dsQjqW6FwRZgbEqR7jXO";
-        var incoming = new URLSearchParams(window.location.search);
-        var extra = new URLSearchParams();
-        var exact = { fbclid: 1, gclid: 1, first_name: 1, last_name: 1, full_name: 1, phone: 1, email: 1 };
-        incoming.forEach(function (value, key) {
-          var name = String(key || "").toLowerCase();
-          if (!value || value.length > 300) return;
-          if (exact[name] || name.indexOf("utm_") === 0) extra.append(name, value);
-        });
-        var qs = extra.toString();
-        iframe.src = qs ? base + "?" + qs : base;
-      })();
-      </script>
-      <script src="https://link.msgsndr.com/js/form_embed.js"></script>
+      <div id="photo-estimate"></div>
+      <script src="/estimate/photo-estimate.js"></script>
     </div>
   </section>
 </main>

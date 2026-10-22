@@ -7,6 +7,8 @@
 <meta name="description" content="Request an NTX Hail photo estimate for hail damage. Send panel photos and a technician replies within 2 business hours from the Denton, Texas office.">
 <link rel="canonical" href="https://www.ntxhail.com/estimate/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://backend.leadconnectorhq.com" crossorigin>
+<link rel="preconnect" href="https://api.leadconnectorhq.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -590,7 +592,7 @@ html, body {
   display: block;
   width: 100%;
   max-width: 100%;
-  min-height: 1500px;
+  min-height: 1080px;
   border: none;
 }
 .estimate-scroll-pad { height: 120px; }
@@ -598,7 +600,7 @@ html, body {
   .estimate-lead { font-size: 16px; }
 }
 @media (max-width: 768px) {
-  .estimate-form iframe { min-height: 2200px; }
+  .estimate-form iframe { min-height: 1280px; }
   .legal.estimate-page { padding-bottom: 200px; }
   .estimate-scroll-pad { height: 160px; }
 }
@@ -868,28 +870,10 @@ a.reach-email:hover, a.btn-email:hover { background: #111827; color: #fff !impor
   <a class="reach-email" href="mailto:team@ntxhail.com">Email</a>
 </div>
     <div class="estimate-form">
-      <iframe src="https://api.leadconnectorhq.com/widget/form/dsQjqW6FwRZgbEqR7jXO" style="width:100%;border:none;border-radius:3px" loading="lazy" id="inline-dsQjqW6FwRZgbEqR7jXO" data-layout="{'id':'INLINE'}" data-trigger-type="alwaysShow" data-trigger-value="" data-activation-type="alwaysActivated" data-activation-value="" data-deactivation-type="neverDeactivate" data-deactivation-value="" data-form-name="NTX Hail Photo Estimate" data-height="1600" data-layout-iframe-id="inline-dsQjqW6FwRZgbEqR7jXO" data-form-id="dsQjqW6FwRZgbEqR7jXO" title="NTX Hail Photo Estimate"></iframe>
-<script>
-(function () {
-  var iframe = document.currentScript && document.currentScript.previousElementSibling;
-  if (!iframe || iframe.tagName !== "IFRAME") return;
-  var allowed = ["first_name", "last_name", "full_name", "phone", "email"];
-  var incoming = new URLSearchParams(window.location.search);
-  var extra = new URLSearchParams();
-  allowed.forEach(function (key) {
-    var value = incoming.get(key);
-    if (value) extra.append(key, value);
-  });
-  var qs = extra.toString();
-  if (!qs) return;
-  var src = iframe.getAttribute("src") || "";
-  iframe.setAttribute("src", src + (src.indexOf("?") === -1 ? "?" : "&") + qs);
-})();
-</script>
-
+      <div id="photo-estimate"></div>
+      <script src="/estimate/photo-estimate.js"></script>
     </div>
     <div class="estimate-scroll-pad" aria-hidden="true"></div>
-    <script src="https://link.msgsndr.com/js/form_embed.js"></script>
   </div>
 </main>
 
