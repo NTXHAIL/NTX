@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Phoenix Hail Repair | NTX Hail</title>
-<meta name="description" content="Paintless dent repair for Phoenix-area hail damage after the October 2026 storms. Mobile service and insurance claim help. Send photos for an estimate.">
+<title>White Glove Hail Repair in Phoenix | NTX Hail</title>
+<meta name="description" content="White glove hail repair in Phoenix. A rental, insurance handling from claim to finished repair, and the car back looking right. Send photos for an estimate.">
 <link rel="canonical" href="https://www.ntxhail.com/phoenix/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -77,26 +77,46 @@ main { padding: 28px 16px 12px; max-width: 760px; margin: 0 auto; }
 }
 h1 {
   font-family: "Bebas Neue", sans-serif;
-  font-size: clamp(46px, 14vw, 72px);
+  font-size: clamp(42px, 12vw, 68px);
   line-height: 0.92; letter-spacing: 0.5px; font-weight: 400;
-  margin-bottom: 14px;
+  margin-bottom: 18px;
 }
 h1 em { font-style: normal; color: var(--blue); }
-.lead { font-size: 17px; color: var(--gray); margin-bottom: 22px; }
-.areas { font-weight: 600; color: var(--dark); }
-.points { display: grid; gap: 10px; margin: 0 0 28px; }
-.point {
+.points {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  margin: 0 0 28px;
+  counter-reset: point;
+}
+.points li {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 12px;
+  align-items: start;
   background: var(--off-white);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 14px 14px 12px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #3d4d60;
 }
-.point h2 {
-  font-family: "Bebas Neue", sans-serif;
-  font-size: 24px; letter-spacing: 0.6px; font-weight: 400;
-  margin-bottom: 4px;
+.points li::before {
+  counter-increment: point;
+  content: counter(point);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.point p { font-size: 15px; color: #3d4d60; }
 .estimate h2 {
   font-family: "Bebas Neue", sans-serif;
   font-size: clamp(36px, 10vw, 52px);
@@ -142,7 +162,6 @@ footer a:hover { text-decoration: underline; }
   header { padding: 12px 28px; }
   .logo img { height: 58px; }
   main { padding-top: 40px; }
-  .points { grid-template-columns: 1fr 1fr 1fr; }
   .reach a { flex: 0 0 auto; min-width: 140px; }
 }
 </style>
@@ -159,22 +178,12 @@ footer a:hover { text-decoration: underline; }
 <p class="update-notice">Update: Local repair facility pending approval.</p>
 <main>
   <p class="badge">October 2026 storms</p>
-  <h1>Phoenix-area <em>hail repair</em></h1>
-  <p class="lead">Paintless dent repair for vehicles hit around <span class="areas">Mesa, North Phoenix and Deer Valley, Glendale, and Peoria</span>. Mobile crews come to the vehicle.</p>
-  <div class="points">
-    <article class="point">
-      <h2>Mobile service</h2>
-      <p>Send photos from your phone. A technician replies with an estimate within 2 business hours, then we schedule the repair.</p>
-    </article>
-    <article class="point">
-      <h2>Claim help</h2>
-      <p>We help you understand the repair and the insurance process. That is not a promise a carrier will approve or pay a claim. NTX Hail does not waive, rebate, or pay deductibles.</p>
-    </article>
-    <article class="point">
-      <h2>Repair Network</h2>
-      <p>We partner with local and national collision centers and affiliate PDR companies to keep repairs moving. Together, we handle overflow capacity, speed up turnaround, and simplify the process for customers and insurance carriers.</p>
-    </article>
-  </div>
+  <h1>White Glove Hail Repair <em>in Phoenix</em></h1>
+  <ol class="points">
+    <li>We bring you a rental.</li>
+    <li>We work directly with your insurance company from claim to finished repair, with repair updates every 2 days.</li>
+    <li>Exceptional delivery: your car comes back looking right.</li>
+  </ol>
   <section class="estimate" id="estimate">
     <h2>Get a photo estimate</h2>
     <p class="sub">Photograph the whole vehicle and each damaged panel. This is an NTX Hail estimate, not an insurance approval.</p>
