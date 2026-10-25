@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Get a Free Hail Damage Photo Estimate | NTX Hail</title>
+<title>Photo Estimate | NTX Hail</title>
 <meta name="description" content="Request an NTX Hail photo estimate for hail damage. Send panel photos and a technician replies within 2 business hours from the Denton, Texas office.">
 <link rel="canonical" href="https://www.ntxhail.com/estimate/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -769,6 +769,41 @@ a.reach-email:hover, a.btn-email:hover { background: #111827; color: #fff !impor
   .hero-desc { margin-bottom: 10px; font-size: 14px; }
   .hero-actions { gap: 8px; }
 }
+.nav-links .nav-estimate,
+.nav-links .nav-cta,
+.nav-links .nav-email {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 36px;
+  height: 36px;
+  padding: 0 14px;
+  border: 2px solid transparent;
+  line-height: 1;
+  font-weight: 700;
+}
+.nav-links .nav-email { border-color: rgba(255,255,255,0.55); }
+.legal.estimate-page { padding: 136px 5vw 24px; min-height: 0; }
+.estimate-page h1 { font-size: clamp(36px, 6vw, 52px); line-height: 0.95; margin-bottom: 6px; }
+.estimate-lead { font-size: 16px; line-height: 1.4; margin-bottom: 12px; }
+.estimate-tip, .estimate-scroll-pad { display: none; height: 0; margin: 0; padding: 0; }
+@media (max-width: 1280px) {
+  .nav-links .nav-estimate,
+  .nav-links .nav-cta,
+  .nav-links .nav-email { min-height: 32px; height: 32px; padding: 0 10px; }
+}
+@media (max-width: 900px) {
+  .legal.estimate-page { padding-top: 124px; }
+}
+@media (max-width: 768px) {
+  .legal.estimate-page { padding-bottom: 24px; }
+}
+@media (max-width: 600px) {
+  .legal.estimate-page { padding: 100px 16px 16px; }
+  .estimate-page h1 { font-size: 34px; }
+  .estimate-lead { font-size: 14px; margin-bottom: 10px; }
+}
 </style>
 <script src="https://link.msgsndr.com/js/external-tracking.js" data-tracking-id="tk_5fa66d4adc4f49ddbaf8c315eaa45f36"></script>
 <script type="application/ld+json">
@@ -859,21 +894,12 @@ a.reach-email:hover, a.btn-email:hover { background: #111827; color: #fff !impor
 <!-- ESTIMATE -->
 <main class="legal estimate-page">
   <div class="legal-inner">
-    <p class="section-label">Photo Estimate</p>
-    <h1>Get a Free Hail Damage <em>Photo Estimate</em></h1>
-    <p class="estimate-lead">Send a few phone photos and a technician will reply with an estimate within 2 business hours.</p>
-    <h2>Photo guide</h2>
-    <p class="estimate-tip">Step back and capture each panel whole.</p>
-    <h2>Send your photos</h2>
-    <div class="reach-row">
-  <a class="reach-call" href="tel:+12143081796">Call</a>
-  <a class="reach-email" href="mailto:team@ntxhail.com">Email</a>
-</div>
+    <h1>Photo <em>Estimate</em></h1>
+    <p class="estimate-lead">Send panel photos and a technician replies within 2 business hours.</p>
     <div class="estimate-form">
       <div id="photo-estimate"></div>
       <script src="/estimate/photo-estimate.js"></script>
     </div>
-    <div class="estimate-scroll-pad" aria-hidden="true"></div>
   </div>
 </main>
 

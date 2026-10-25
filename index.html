@@ -498,9 +498,8 @@ font-size: 12px; color: rgba(255,255,255,0.3); flex-wrap: wrap; gap: 8px;
   .hero-content { padding: 32px 0 16px; }
   .hero h1 { font-size: clamp(36px, 10vw, 50px); line-height: 1.0; }
   .hero-desc { font-size: 15px; max-width: 100%; }
-  .hero-actions { flex-direction: column; align-items: stretch; gap: 10px; }
-  .hero-actions a,
-  .hero-actions button { text-align: center; justify-content: center; width: 100%; }
+  .hero-actions { flex-direction: row; flex-wrap: wrap; align-items: stretch; gap: 8px; }
+  .hero-actions > a { text-align: center; justify-content: center; width: auto; }
   .hero-visual { padding: 0 0 32px; }
   .hero-card { padding: 24px 18px; }
   .stat-grid { grid-template-columns: 1fr 1fr; }
@@ -724,6 +723,65 @@ a.reach-email:hover, a.btn-email:hover { background: #111827; color: #fff !impor
   .hero-desc { margin-bottom: 10px; font-size: 14px; }
   .hero-actions { gap: 8px; }
 }
+.nav-links .nav-estimate,
+.nav-links .nav-cta,
+.nav-links .nav-email {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 36px;
+  height: 36px;
+  padding: 0 14px;
+  border: 2px solid transparent;
+  line-height: 1;
+  font-weight: 700;
+}
+.nav-links .nav-email { border-color: rgba(255,255,255,0.55); }
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 12px;
+}
+.hero-actions > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  min-height: 48px;
+  height: 48px;
+  margin: 0;
+  padding: 0 18px;
+  border-radius: 6px;
+  border: 2px solid transparent;
+  box-shadow: none;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  transform: none;
+}
+.hero-actions > a.btn-estimate { background: #16a34a; color: #fff; border-color: #16a34a; }
+.hero-actions > a.btn-estimate:hover { background: #15803d; border-color: #15803d; color: #fff; transform: none; }
+.hero-actions > a.btn-primary:not(.btn-estimate) { background: #1565C0; color: #fff; border-color: #1565C0; }
+.hero-actions > a.btn-primary:not(.btn-estimate):hover { background: #0d47a1; border-color: #0d47a1; color: #fff; transform: none; }
+.hero-actions > a.btn-email { background: #fff; color: #1A2433 !important; border-color: #1A2433; }
+.hero-actions > a.btn-email:hover { background: #1A2433; color: #fff !important; }
+@media (max-width: 1280px) {
+  .nav-links .nav-estimate,
+  .nav-links .nav-cta,
+  .nav-links .nav-email { min-height: 32px; height: 32px; padding: 0 10px; }
+}
+@media (max-width: 600px) {
+  .hero-actions { flex-direction: row; flex-wrap: wrap; align-items: stretch; gap: 8px; }
+  .hero-actions > a { width: auto; flex: 1 1 0; }
+  .hero-actions > a.btn-estimate { flex: 1 1 100%; }
+}
 </style>
 <script src="https://link.msgsndr.com/js/external-tracking.js" data-tracking-id="tk_5fa66d4adc4f49ddbaf8c315eaa45f36"></script>
 <script type="application/ld+json">
@@ -819,11 +877,8 @@ a.reach-email:hover, a.btn-email:hover { background: #111827; color: #fff !impor
 <p class="hero-desc">America's premier paintless dent repair team. We handle everything &mdash; from your insurance claim to showroom-quality delivery.</p>
 <div class="hero-actions">
 <a href="/estimate/" class="btn-primary btn-estimate">Get a Photo Estimate</a>
-<div class="reach-row">
 <a href="tel:+12143081796" class="btn-primary">Call</a>
 <a href="mailto:team@ntxhail.com" class="btn-email">Email</a>
-</div>
-<a href="mailto:claims@ntxhail.com" class="btn-outline">&#128203; Check Claims Status</a>
 </div>
 </div>
 <div class="hero-visual">
