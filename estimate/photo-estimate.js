@@ -11,7 +11,6 @@
   var YEAR_FIELD = "uXk1aEoqXmtNOQYSvRBo";
   var MAKE_FIELD = "PYHficDYdCpxBgP6Ghmg";
   var MODEL_FIELD = "P25ojyVjwWOJr6wTvdxY";
-  var INSURANCE_FIELD = "EcZ7ZBwUhSeR1x5Vs7Cp";
   var NOTES_FIELD = "sakz4lDzZZRAE6nk4MsW";
   var MAX_EDGE = 1800;
   var JPEG_QUALITY = 0.78;
@@ -162,7 +161,7 @@
       var name = String(key || "").toLowerCase();
       if (!value || value.length > 300) return;
       if (name === "fbclid" || name === "gclid" || name.indexOf("utm_") === 0) keep[name] = value;
-      if (name === "first_name" || name === "last_name" || name === "phone" || name === "email" || name === "full_name") prefill[name] = value;
+      if (name === "first_name" || name === "last_name" || name === "phone" || name === "email" || name === "full_name" || name === "zip" || name === "postal_code") prefill[name] = value;
     });
     return { keep: keep, prefill: prefill };
   }
@@ -200,19 +199,28 @@
     };
     var ga = gaClientId();
     if (ga) fields.eventData.gaClientId = ga;
+    var name = splitName(form.full_name.value);
+    fields.first_name = name.first;
+    if (name.last) fields.last_name = name.last;
+    fields.phone = normalizePhone(form.phone.value);
+    var zip = normalizeZip(form.zip.value);
+    fields.postal_code = zip;
+    fields[NOTES_FIELD] = "ZIP: " + zip;
     fields[YEAR_FIELD] = form.year.value;
     fields[MAKE_FIELD] = form.make.value;
     fields[MODEL_FIELD] = form.model.value.trim();
-    if (form.insurance.value) fields[INSURANCE_FIELD] = form.insurance.value;
-    fields.first_name = form.first_name.value.trim();
-    if (form.last_name.value.trim()) fields.last_name = form.last_name.value.trim();
-    fields.phone = normalizePhone(form.phone.value);
-    if (form.email.value.trim()) fields.email = form.email.value.trim();
-    if (form.notes.value.trim()) fields[NOTES_FIELD] = form.notes.value.trim();
-    fields.terms_and_conditions = termText[0] + "; " + termText[1];
-    fields.terms_and_conditions_1 = true;
-    fields.terms_and_conditions_2 = true;
     return fields;
+  }
+
+  function splitName(value) {
+    var parts = value.trim().split(/\s+/).filter(Boolean);
+    return { first: parts.shift() || "", last: parts.join(" ") };
+  }
+
+  function normalizeZip(value) {
+    var digits = value.replace(/\D/g, "");
+    if (digits.length === 9) return digits.slice(0, 5) + "-" + digits.slice(5);
+    return digits;
   }
 
   function normalizePhone(value) {
@@ -404,15 +412,15 @@
   }
 
   function validate(formNode) {
-    if (!photos.length) return "Add at least one hail damage photo.";
+    if (!formNode.full_name.value.trim()) return "Enter your name.";
+    var digits = formNode.phone.value.replace(/\D/g, "");
+    if (digits.length < 10) return "Enter a phone number we can text or call about this estimate.";
+    var zipDigits = formNode.zip.value.replace(/\D/g, "");
+    if (!(zipDigits.length === 5 || zipDigits.length === 9)) return "Enter a 5-digit ZIP code.";
     if (!formNode.year.value) return "Select the vehicle year.";
     if (!formNode.make.value) return "Select the vehicle make.";
     if (!formNode.model.value.trim()) return "Enter the vehicle model.";
-    if (!formNode.first_name.value.trim()) return "Enter your first name.";
-    var digits = formNode.phone.value.replace(/\D/g, "");
-    if (digits.length < 10) return "Enter a phone number we can text or call about this estimate.";
-    if (formNode.email.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formNode.email.value.trim())) return "Enter a valid email, or leave it blank.";
-    if (!formNode.consent_service.checked || !formNode.consent_marketing.checked) return "Both consent boxes are required.";
+    if (!photos.length) return "Add at least one hail damage photo.";
     return "";
   }
 
@@ -539,12 +547,14 @@
     style.textContent = [
       "#photo-estimate{font-family:\"DM Sans\",sans-serif;color:#1A2433}",
       "#photo-estimate *{box-sizing:border-box}",
-      "#photo-estimate .pe-form{display:grid;gap:14px;padding:16px}",
+      "#photo-estimate .pe-form{display:grid;gap:10px;padding:12px 14px}",
+      "#photo-estimate .pe-vehicle{display:grid;grid-template-columns:minmax(72px,0.7fr) minmax(0,1.15fr) minmax(0,1fr);gap:8px}",
+      "#photo-estimate .pe-vehicle select,#photo-estimate .pe-vehicle input{min-height:44px;padding:8px 10px}",
       "#photo-estimate h3{font-family:\"Bebas Neue\",sans-serif;font-size:28px;font-weight:400;letter-spacing:.4px;margin:0}",
       "#photo-estimate p{margin:0;color:#6B7C93;font-size:14px;line-height:1.45}",
       "#photo-estimate .pe-field{display:grid;gap:6px;font-size:14px;font-weight:600}",
       "#photo-estimate .pe-field small{font-weight:400;color:#6B7C93}",
-      "#photo-estimate input,#photo-estimate select,#photo-estimate textarea{width:100%;min-height:48px;padding:10px 12px;border:1px solid #DDE3EC;border-radius:8px;font:400 16px/1.4 \"DM Sans\",sans-serif;color:#1A2433;background:#fff}",
+      "#photo-estimate input,#photo-estimate select,#photo-estimate textarea{width:100%;min-height:44px;padding:8px 12px;border:1px solid #DDE3EC;border-radius:8px;font:400 16px/1.4 \"DM Sans\",sans-serif;color:#1A2433;background:#fff}",
       "#photo-estimate textarea{min-height:96px;resize:vertical}",
       "#photo-estimate input:focus,#photo-estimate select:focus,#photo-estimate textarea:focus{outline:2px solid #1565C0;border-color:#1565C0}",
       "#photo-estimate .pe-grid{display:grid;gap:12px}",
@@ -578,21 +588,12 @@
     fileInput = el("input", { type: "file", name: "photos", accept: "image/jpeg,image/png,image/heic,image/heif,.jpg,.jpeg,.png,.heic,.heif", multiple: "multiple", required: "required" });
     fileInput.addEventListener("change", function () { addFiles(fileInput.files); });
     photoList = el("ul", { class: "pe-photos" });
-    var year = select("year", YEARS, "Select year");
-    var make = select("make", MAKES, "Select make");
-    var model = el("input", { name: "model", required: "required", autocomplete: "off", maxlength: "80" });
-    var insurance = el("div", { class: "pe-radios" });
-    ["Yes", "No", "Not sure"].forEach(function (choice) {
-      var input = el("input", { type: "radio", name: "insurance", value: choice });
-      insurance.appendChild(el("label", {}, [input, el("span", { text: choice })]));
-    });
-    var first = el("input", { name: "first_name", required: "required", autocomplete: "given-name", maxlength: "80" });
-    var last = el("input", { name: "last_name", autocomplete: "family-name", maxlength: "80" });
+    var year = select("year", YEARS, "Year");
+    var make = select("make", MAKES, "Make");
+    var model = el("input", { name: "model", required: "required", autocomplete: "off", maxlength: "80", placeholder: "Model", "aria-label": "Vehicle model" });
+    var full = el("input", { name: "full_name", required: "required", autocomplete: "name", maxlength: "120" });
     var phone = el("input", { name: "phone", type: "tel", required: "required", autocomplete: "tel", inputmode: "tel", maxlength: "24" });
-    var email = el("input", { name: "email", type: "email", autocomplete: "email", maxlength: "120" });
-    var notes = el("textarea", { name: "notes", maxlength: "2000" });
-    var consent1 = el("input", { type: "checkbox", name: "consent_service", required: "required" });
-    var consent2 = el("input", { type: "checkbox", name: "consent_marketing", required: "required" });
+    var zip = el("input", { name: "zip", required: "required", autocomplete: "postal-code", inputmode: "numeric", maxlength: "10", placeholder: "75001" });
     progressBar = el("span");
     progressNode = el("div", { class: "pe-progress", role: "progressbar", "aria-valuemin": "0", "aria-valuemax": "100", "aria-valuenow": "0", "aria-label": "Upload progress" }, [progressBar]);
     progressNode.hidden = true;
@@ -603,56 +604,28 @@
     fallbackHost = el("div", { class: "pe-fallback" });
     fallbackHost.hidden = true;
     var prefill = queryParams().prefill;
-    if (prefill.full_name && !prefill.first_name) {
-      var parts = prefill.full_name.split(/\s+/);
-      prefill.first_name = parts.shift() || "";
-      if (!prefill.last_name) prefill.last_name = parts.join(" ");
-    }
-    if (prefill.first_name) first.value = prefill.first_name;
-    if (prefill.last_name) last.value = prefill.last_name;
+    var prefillName = prefill.full_name || [prefill.first_name, prefill.last_name].filter(Boolean).join(" ");
+    if (prefillName) full.value = prefillName;
     if (prefill.phone) phone.value = prefill.phone;
-    if (prefill.email) email.value = prefill.email;
+    if (prefill.zip || prefill.postal_code) zip.value = prefill.zip || prefill.postal_code;
 
     form = el("form", { class: "pe-form", novalidate: "novalidate" }, [
-      el("div", {}, [
-        el("h3", { text: "Send panel photos" }),
-        el("p", { text: "Photos are resized on your phone before they upload, so a full camera roll sends much faster." })
-      ]),
-      field("Hail damage photos", fileInput),
-      photoList,
-      el("div", { class: "pe-grid" }, [
-        field("Vehicle year", year),
-        field("Vehicle make", make)
-      ]),
-      field("Vehicle model", model),
+      field("Name", full),
+      field("Phone", phone),
+      field("ZIP", zip),
+      // Year, make, and model stay on one row. GoHighLevel still marks those three fields required.
       el("div", { class: "pe-field" }, [
-        el("span", { text: "Filing with insurance?" }),
-        insurance
+        el("span", { text: "Vehicle" }),
+        el("div", { class: "pe-vehicle" }, [year, make, model])
       ]),
-      el("div", { class: "pe-grid" }, [
-        field("First name", first),
-        field("Last name", last)
-      ]),
-      field("Phone", phone, "We only use this number to reply about your estimate."),
-      field("Email", email),
-      field("Notes (optional)", notes),
-      el("label", { class: "pe-check" }, [consent1, el("span", { text: termText[0] })]),
-      el("label", { class: "pe-check" }, [consent2, el("span", { text: termText[1] })]),
+      field("Hail damage photos", fileInput, "Resized on your phone before upload."),
+      photoList,
       turnstileHost,
       progressNode,
       statusNode,
       submitBtn,
-      el("button", { type: "button", class: "pe-alt", text: "Use the standard form" }),
-      el("div", { class: "pe-links" }, [
-        el("a", { href: "/privacy-policy/", text: "Privacy Policy" }),
-        el("a", { href: "/terms/", text: "Terms of Service" })
-      ]),
       fallbackHost
     ]);
-    form.querySelector(".pe-alt").addEventListener("click", function () {
-      setStatus("The standard form is below.", "info");
-      showFallback();
-    });
     form.addEventListener("submit", onSubmit);
     host.appendChild(form);
     startTurnstile().catch(function () {});
