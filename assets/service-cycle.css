@@ -1,0 +1,112 @@
+/* Rotating NTX service lines. Motion is optional; the static list is the fallback. */
+.brand-lockup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+  min-width: 0;
+}
+.service-cycle { position: relative; }
+.service-cycle-window {
+  display: inline-grid;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding-left: 12px;
+  color: #fff;
+  font-family: "DM Sans", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+.service-cycle-window::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.32em;
+  width: 6px;
+  height: 6px;
+  border-radius: 1px;
+  background: #C62828;
+}
+.service-cycle-window::after {
+  content: "NTX - Catastrophe Response";
+  grid-area: 1 / 1;
+  visibility: hidden;
+}
+.service-cycle-line {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transform: translateY(65%);
+}
+.service-cycle-line.is-on,
+.service-cycle-line.is-leave {
+  transition: opacity 0.48s ease, transform 0.48s ease;
+}
+.service-cycle-line.is-on {
+  opacity: 1;
+  transform: translateY(0);
+}
+.service-cycle-line.is-leave {
+  opacity: 0;
+  transform: translateY(-65%);
+}
+.service-cycle-still {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: normal;
+}
+.service-cycle-hero {
+  margin: 12px 0 0;
+}
+.service-cycle-hero .service-cycle-window {
+  padding-left: 16px;
+  color: #1A2433;
+  font-size: clamp(16px, 2.2vw, 22px);
+  letter-spacing: 0.01em;
+}
+.service-cycle-hero .service-cycle-window::before {
+  top: 0.38em;
+  width: 8px;
+  height: 8px;
+  background: #1565C0;
+}
+.service-cycle-hero .service-cycle-still {
+  color: #1A2433;
+  font-family: "DM Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+@media (max-width: 600px) {
+  .brand-lockup .service-cycle-window { font-size: 10px; }
+  .service-cycle-hero .service-cycle-window { font-size: clamp(15px, 4.4vw, 18px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .service-cycle-window { display: none; }
+  .service-cycle-still {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    color: #fff;
+    font-family: "DM Sans", sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.45;
+  }
+  .service-cycle-hero .service-cycle-still {
+    color: #1A2433;
+    font-size: 16px;
+  }
+  nav { height: auto; }
+}
